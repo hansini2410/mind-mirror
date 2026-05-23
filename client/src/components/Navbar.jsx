@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Link,
   useLocation,
@@ -6,12 +8,20 @@ import {
 
 import { motion } from "framer-motion";
 
+import {
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
+
 import "@fontsource/poppins";
 
 function Navbar() {
   const location = useLocation();
 
   const navigate = useNavigate();
+
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
   const user = JSON.parse(
     localStorage.getItem("mindmirrorUser") ||
@@ -26,6 +36,10 @@ function Navbar() {
     window.location.reload();
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   const isActive = (path) => {
     if (path === "/") {
       return location.pathname === "/";
@@ -35,23 +49,31 @@ function Navbar() {
   };
 
   const navButtonClass = (path) =>
-    `px-3 py-2 rounded-xl transition text-sm whitespace-nowrap ${
+    `px-4 py-2 rounded-xl transition text-sm whitespace-nowrap ${
       isActive(path)
         ? "bg-white/10 text-white"
         : "text-slate-300 hover:text-white"
     }`;
 
+  const mobileNavButtonClass = (path) =>
+    `w-full text-left px-4 py-3 rounded-2xl transition text-sm ${
+      isActive(path)
+        ? "bg-white/10 text-white"
+        : "text-slate-300 hover:text-white hover:bg-white/5"
+    }`;
+
   return (
     <div
-      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/10 overflow-hidden"
+      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-slate-950/80 border-b border-white/10"
       style={{
         fontFamily: "Poppins, sans-serif",
       }}
     >
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4 overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4">
         <Link
           to="/"
           className="shrink-0"
+          onClick={closeMenu}
         >
           <motion.div
             whileHover={{
@@ -79,7 +101,17 @@ function Navbar() {
           </motion.div>
         </Link>
 
-        <div className="flex items-center justify-end gap-1 md:gap-2 flex-wrap">
+        <button
+          type="button"
+          onClick={() =>
+            setMenuOpen(!menuOpen)
+          }
+          className="md:hidden bg-white/10 border border-white/10 text-white p-3 rounded-xl"
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
+        <div className="hidden md:flex items-center justify-end gap-2">
           <Link to="/">
             <motion.button
               whileHover={{
@@ -193,6 +225,109 @@ function Navbar() {
           )}
         </div>
       </div>
+
+      {menuOpen && (
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: -10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          className="md:hidden px-4 pb-5"
+        >
+          <div className="bg-slate-950/95 border border-white/10 rounded-3xl p-4 space-y-2 shadow-2xl">
+            <Link
+              to="/"
+              onClick={closeMenu}
+            >
+              <button className={mobileNavButtonClass("/")}>
+                Home
+              </button>
+            </Link>
+
+            <Link
+              to="/quizzes"
+              onClick={closeMenu}
+            >
+              <button className={mobileNavButtonClass("/quizzes")}>
+                Assessments
+              </button>
+            </Link>
+
+            <Link
+              to="/blogs"
+              onClick={closeMenu}
+            >
+              <button className={mobileNavButtonClass("/blogs")}>
+                Insights
+              </button>
+            </Link>
+
+            {user ? (
+              <>
+                <Link
+                  to="/contribute"
+                  onClick={closeMenu}
+                >
+                  <button className={mobileNavButtonClass("/contribute")}>
+                    Contribute
+                  </button>
+                </Link>
+
+                <Link
+                  to="/dashboard"
+                  onClick={closeMenu}
+                >
+                  <button className={mobileNavButtonClass("/dashboard")}>
+                    Dashboard
+                  </button>
+                </Link>
+
+                {user?.user?.role === "admin" && (
+                  <Link
+                    to="/admin"
+                    onClick={closeMenu}
+                  >
+                    <button className={mobileNavButtonClass("/admin")}>
+                      Admin
+                    </button>
+                  </Link>
+                )}
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left bg-white/10 border border-white/10 px-4 py-3 rounded-2xl text-white text-sm font-semibold hover:bg-white/20 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  onClick={closeMenu}
+                >
+                  <button className={mobileNavButtonClass("/login")}>
+                    Login
+                  </button>
+                </Link>
+
+                <Link
+                  to="/register"
+                  onClick={closeMenu}
+                >
+                  <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3 rounded-2xl text-white text-sm font-semibold shadow-lg shadow-blue-500/20">
+                    Begin Journey
+                  </button>
+                </Link>
+              </>
+            )}
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -17,16 +17,15 @@ function Home() {
       className="min-h-screen text-white overflow-hidden relative"
       style={{
         fontFamily: "Poppins, sans-serif",
-
         background:
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
     >
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-0 w-[280px] h-[280px] md:w-[600px] md:h-[600px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[280px] h-[280px] md:w-[600px] md:h-[600px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8 pt-40 pb-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 md:px-8 pt-36 md:pt-40 pb-20 md:pb-24">
         <motion.div
           initial={{
             opacity: 0,
@@ -36,17 +35,17 @@ function Home() {
             opacity: 1,
             y: 0,
           }}
-          className="text-center mb-32"
+          className="text-center mb-20 md:mb-32"
         >
-          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-6 py-3 rounded-full mb-10 backdrop-blur-xl">
-            <FaBrain className="text-cyan-300" />
+          <div className="inline-flex max-w-full items-center justify-center gap-2 sm:gap-3 bg-white/10 border border-white/10 px-4 sm:px-6 py-3 rounded-full mb-8 md:mb-10 backdrop-blur-xl">
+            <FaBrain className="text-cyan-300 shrink-0" />
 
-            <p className="uppercase tracking-[0.3em] text-cyan-200 text-sm">
+            <p className="uppercase tracking-[0.18em] sm:tracking-[0.3em] text-cyan-200 text-[10px] sm:text-sm leading-relaxed">
               MindMirror Emotional Wellness Platform
             </p>
           </div>
 
-          <h1 className="text-8xl font-bold leading-tight mb-10">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.15] md:leading-tight mb-8 md:mb-10 break-words">
             Understand Your
             <br />
 
@@ -55,17 +54,14 @@ function Home() {
             </span>
           </h1>
 
-          <p className="text-slate-300 text-2xl leading-[2] max-w-4xl mx-auto mb-14">
-            MindMirror is an immersive
-            emotional wellness and psychology
-            platform designed to help users
-            explore self-awareness, emotional
-            intelligence, cognitive patterns,
-            and reflective personal growth.
+          <p className="text-slate-300 text-lg sm:text-xl md:text-2xl leading-8 sm:leading-9 md:leading-[2] max-w-4xl mx-auto mb-10 md:mb-14 px-1">
+            MindMirror is an immersive emotional wellness and psychology
+            platform designed to help users explore self-awareness, emotional
+            intelligence, cognitive patterns, and reflective personal growth.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link to="/quizzes">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6">
+            <Link to="/quizzes" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{
                   scale: 1.04,
@@ -73,13 +69,13 @@ function Home() {
                 whileTap={{
                   scale: 0.98,
                 }}
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 px-10 py-5 rounded-3xl text-xl font-semibold shadow-2xl shadow-blue-500/20"
+                className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 px-7 sm:px-10 py-4 sm:py-5 rounded-3xl text-base sm:text-xl font-semibold shadow-2xl shadow-blue-500/20"
               >
                 Explore Assessments
               </motion.button>
             </Link>
 
-            <Link to="/blogs">
+            <Link to="/blogs" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{
                   scale: 1.04,
@@ -87,7 +83,7 @@ function Home() {
                 whileTap={{
                   scale: 0.98,
                 }}
-                className="bg-white/10 border border-white/10 px-10 py-5 rounded-3xl text-xl font-semibold backdrop-blur-xl"
+                className="w-full sm:w-auto bg-white/10 border border-white/10 px-7 sm:px-10 py-4 sm:py-5 rounded-3xl text-base sm:text-xl font-semibold backdrop-blur-xl"
               >
                 Read Psychology Insights
               </motion.button>
@@ -95,27 +91,25 @@ function Home() {
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-20 md:mb-32">
           <motion.div
             whileHover={{
               y: -10,
             }}
-            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[40px] p-7 sm:p-8 md:p-10 shadow-2xl"
           >
-            <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300 mb-8">
+            <div className="bg-cyan-500/20 w-16 h-16 md:w-20 md:h-20 rounded-3xl flex items-center justify-center text-3xl md:text-4xl text-cyan-300 mb-6 md:mb-8">
               <FaHeart />
             </div>
 
-            <h2 className="text-4xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 md:mb-6 leading-tight">
               Guided Self-Reflection
             </h2>
 
-            <p className="text-slate-300 text-xl leading-9">
-              Explore emotional awareness,
-              stress patterns, behavioral
-              tendencies, and psychological
-              insights through immersive
-              wellness experiences.
+            <p className="text-slate-300 text-lg md:text-xl leading-8 md:leading-9">
+              Explore emotional awareness, stress patterns, behavioral
+              tendencies, and psychological insights through immersive wellness
+              experiences.
             </p>
           </motion.div>
 
@@ -123,21 +117,19 @@ function Home() {
             whileHover={{
               y: -10,
             }}
-            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[40px] p-7 sm:p-8 md:p-10 shadow-2xl"
           >
-            <div className="bg-blue-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-blue-300 mb-8">
+            <div className="bg-blue-500/20 w-16 h-16 md:w-20 md:h-20 rounded-3xl flex items-center justify-center text-3xl md:text-4xl text-blue-300 mb-6 md:mb-8">
               <FaBookOpen />
             </div>
 
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 md:mb-6">
               Psychology Library
             </h2>
 
-            <p className="text-slate-300 text-xl leading-9">
-              Explore emotional wellness
-              resources, behavioral psychology,
-              and reflective learning content
-              from trusted sources.
+            <p className="text-slate-300 text-lg md:text-xl leading-8 md:leading-9">
+              Explore emotional wellness resources, behavioral psychology, and
+              reflective learning content from trusted sources.
             </p>
           </motion.div>
 
@@ -145,49 +137,47 @@ function Home() {
             whileHover={{
               y: -10,
             }}
-            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[40px] p-7 sm:p-8 md:p-10 shadow-2xl"
           >
-            <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300 mb-8">
+            <div className="bg-cyan-500/20 w-16 h-16 md:w-20 md:h-20 rounded-3xl flex items-center justify-center text-3xl md:text-4xl text-cyan-300 mb-6 md:mb-8">
               <FaChartLine />
             </div>
 
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 md:mb-6">
               Emotional Growth
             </h2>
 
-            <p className="text-slate-300 text-xl leading-9">
-              Receive emotionally adaptive
-              reflections, wellness guidance,
-              and self-awareness suggestions.
+            <p className="text-slate-300 text-lg md:text-xl leading-8 md:leading-9">
+              Receive emotionally adaptive reflections, wellness guidance, and
+              self-awareness suggestions.
             </p>
           </motion.div>
         </div>
 
-        <div className="mb-32">
-          <h2 className="text-6xl font-bold text-center mb-20">
+        <div className="mb-20 md:mb-32">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-12 md:mb-20 leading-tight">
             Featured Experiences
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <motion.div
               whileHover={{
                 y: -10,
               }}
-              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[40px] p-7 sm:p-8 md:p-10 shadow-2xl"
             >
-              <p className="uppercase tracking-[0.3em] text-cyan-300 text-sm mb-5">
+              <p className="uppercase tracking-[0.2em] md:tracking-[0.3em] text-cyan-300 text-xs md:text-sm mb-5">
                 Featured Assessment
               </p>
 
-              <h3 className="text-4xl font-bold mb-6 leading-tight">
+              <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Emotional Intelligence Analysis
               </h3>
 
-              <p className="text-slate-300 text-xl leading-9 mb-10">
-                Understand emotional awareness,
-                empathy, communication patterns,
-                and emotional regulation through
-                immersive self-reflection.
+              <p className="text-slate-300 text-lg md:text-xl leading-8 md:leading-9 mb-8 md:mb-10">
+                Understand emotional awareness, empathy, communication
+                patterns, and emotional regulation through immersive
+                self-reflection.
               </p>
 
               <Link to="/quizzes">
@@ -198,7 +188,7 @@ function Home() {
                   whileTap={{
                     scale: 0.98,
                   }}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-4 rounded-2xl font-semibold shadow-xl shadow-blue-500/20"
+                  className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 px-7 md:px-8 py-4 rounded-2xl font-semibold shadow-xl shadow-blue-500/20"
                 >
                   Explore Assessment
                 </motion.button>
@@ -209,21 +199,20 @@ function Home() {
               whileHover={{
                 y: -10,
               }}
-              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[40px] p-7 sm:p-8 md:p-10 shadow-2xl"
             >
-              <p className="uppercase tracking-[0.3em] text-cyan-300 text-sm mb-5">
+              <p className="uppercase tracking-[0.2em] md:tracking-[0.3em] text-cyan-300 text-xs md:text-sm mb-5">
                 Featured Insight
               </p>
 
-              <h3 className="text-4xl font-bold mb-6 leading-tight">
+              <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Understanding Anxiety and Overthinking
               </h3>
 
-              <p className="text-slate-300 text-xl leading-9 mb-10">
-                Explore how repetitive thinking,
-                emotional stress, and cognitive
-                overload influence emotional
-                wellbeing and mental clarity.
+              <p className="text-slate-300 text-lg md:text-xl leading-8 md:leading-9 mb-8 md:mb-10">
+                Explore how repetitive thinking, emotional stress, and
+                cognitive overload influence emotional wellbeing and mental
+                clarity.
               </p>
 
               <Link to="/blogs?topic=anxiety%20overthinking">
@@ -234,7 +223,7 @@ function Home() {
                   whileTap={{
                     scale: 0.98,
                   }}
-                  className="bg-white/10 border border-white/10 px-8 py-4 rounded-2xl font-semibold backdrop-blur-xl"
+                  className="w-full sm:w-auto bg-white/10 border border-white/10 px-7 md:px-8 py-4 rounded-2xl font-semibold backdrop-blur-xl"
                 >
                   Read Insight
                 </motion.button>
@@ -243,19 +232,16 @@ function Home() {
           </div>
         </div>
 
-        <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[50px] p-16 text-center shadow-2xl">
-          <h2 className="text-6xl font-bold mb-10 leading-tight">
+        <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] md:rounded-[50px] p-7 sm:p-10 md:p-16 text-center shadow-2xl">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 md:mb-10 leading-tight">
             Begin Your Emotional
-            <br />
-
+            <br className="hidden sm:block" />
             Reflection Journey
           </h2>
 
-          <p className="text-slate-300 text-2xl leading-[2] max-w-4xl mx-auto mb-12">
-            Explore psychology, emotional
-            intelligence, wellness patterns,
-            and self-awareness through
-            immersive digital experiences.
+          <p className="text-slate-300 text-lg sm:text-xl md:text-2xl leading-8 sm:leading-9 md:leading-[2] max-w-4xl mx-auto mb-10 md:mb-12">
+            Explore psychology, emotional intelligence, wellness patterns, and
+            self-awareness through immersive digital experiences.
           </p>
 
           <Link to="/quizzes">
@@ -266,7 +252,7 @@ function Home() {
               whileTap={{
                 scale: 0.98,
               }}
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 px-12 py-6 rounded-3xl text-2xl font-semibold shadow-2xl shadow-blue-500/20"
+              className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 px-8 sm:px-12 py-5 sm:py-6 rounded-3xl text-xl sm:text-2xl font-semibold shadow-2xl shadow-blue-500/20"
             >
               Start Exploring
             </motion.button>
