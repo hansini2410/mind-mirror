@@ -31,13 +31,11 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("mindmirrorUser");
 
+    setMenuOpen(false);
+
     navigate("/login");
 
     window.location.reload();
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
   };
 
   const isActive = (path) => {
@@ -48,15 +46,19 @@ function Navbar() {
     return location.pathname.startsWith(path);
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   const navButtonClass = (path) =>
-    `px-4 py-2 rounded-xl transition text-sm whitespace-nowrap ${
+    `px-3 py-2 rounded-xl transition text-sm whitespace-nowrap ${
       isActive(path)
         ? "bg-white/10 text-white"
         : "text-slate-300 hover:text-white"
     }`;
 
   const mobileNavButtonClass = (path) =>
-    `w-full text-left px-4 py-3 rounded-2xl transition text-sm ${
+    `w-full text-left px-5 py-4 rounded-2xl transition text-base ${
       isActive(path)
         ? "bg-white/10 text-white"
         : "text-slate-300 hover:text-white hover:bg-white/5"
@@ -101,17 +103,7 @@ function Navbar() {
           </motion.div>
         </Link>
 
-        <button
-          type="button"
-          onClick={() =>
-            setMenuOpen(!menuOpen)
-          }
-          className="md:hidden bg-white/10 border border-white/10 text-white p-3 rounded-xl"
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-
-        <div className="hidden md:flex items-center justify-end gap-2">
+        <div className="hidden md:flex items-center justify-end gap-1 md:gap-2">
           <Link to="/">
             <motion.button
               whileHover={{
@@ -224,6 +216,17 @@ function Navbar() {
             </>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            setMenuOpen(!menuOpen)
+          }
+          className="md:hidden shrink-0 bg-white/10 border border-white/10 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-xl hover:bg-white/20 transition"
+          aria-label="Toggle navigation menu"
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
       </div>
 
       {menuOpen && (
@@ -238,7 +241,7 @@ function Navbar() {
           }}
           className="md:hidden px-4 pb-5"
         >
-          <div className="bg-slate-950/95 border border-white/10 rounded-3xl p-4 space-y-2 shadow-2xl">
+          <div className="bg-slate-950/95 border border-white/10 rounded-3xl p-3 shadow-2xl space-y-2">
             <Link
               to="/"
               onClick={closeMenu}
@@ -298,8 +301,9 @@ function Navbar() {
                 )}
 
                 <button
+                  type="button"
                   onClick={handleLogout}
-                  className="w-full text-left bg-white/10 border border-white/10 px-4 py-3 rounded-2xl text-white text-sm font-semibold hover:bg-white/20 transition"
+                  className="w-full text-left px-5 py-4 rounded-2xl bg-white/10 border border-white/10 text-white font-semibold hover:bg-white/20 transition"
                 >
                   Logout
                 </button>
@@ -319,7 +323,7 @@ function Navbar() {
                   to="/register"
                   onClick={closeMenu}
                 >
-                  <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3 rounded-2xl text-white text-sm font-semibold shadow-lg shadow-blue-500/20">
+                  <button className="w-full text-left px-5 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-blue-500/20">
                     Begin Journey
                   </button>
                 </Link>
