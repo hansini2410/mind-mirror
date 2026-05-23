@@ -61,7 +61,7 @@ function Navbar() {
           >
             <div className="bg-cyan-500/20 p-2 rounded-xl flex items-center justify-center">
               <img
-                src="/mindmirror-icon.png"
+                src="/favicon.PNG"
                 alt="MindMirror Logo"
                 className="w-8 h-8 object-contain"
               />
