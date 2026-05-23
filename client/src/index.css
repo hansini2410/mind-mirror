@@ -8,3 +8,86 @@ body {
   color: white;
   font-family: sans-serif;
 }
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(2.4rem, 12vw, 4.5rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.04em;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 8vw, 3rem) !important;
+    line-height: 1.18 !important;
+    overflow-wrap: break-word;
+  }
+
+  h3 {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    line-height: 1.25 !important;
+    overflow-wrap: break-word;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .text-8xl,
+  .text-7xl,
+  .text-6xl,
+  .text-5xl,
+  .text-4xl {
+    font-size: clamp(2.2rem, 11vw, 4rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .p-16,
+  .p-12,
+  .p-10,
+  .p-8 {
+    padding: 1.5rem !important;
+  }
+
+  .rounded-\[50px\],
+  .rounded-\[40px\],
+  .rounded-\[32px\] {
+    border-radius: 1.5rem !important;
+  }
+
+  .tracking-\[0\.3em\] {
+    letter-spacing: 0.18em !important;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    max-width: 100%;
+  }
+}
