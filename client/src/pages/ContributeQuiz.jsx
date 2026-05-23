@@ -14,7 +14,7 @@ import {
 
 import "@fontsource/poppins";
 
-const API_BASE_URL =
+const API_URL =
   import.meta.env.VITE_API_URL ||
   "https://mindmirror-backend-hit3.onrender.com/api";
 
@@ -336,8 +336,8 @@ function ContributeQuiz() {
         }
 
         if (
-          Number(option.score) < 1 ||
-          Number(option.score) > 5
+          option.score < 1 ||
+          option.score > 5
         ) {
           setMessage(
             `Scores must be between 1 and 5 in Question ${i + 1}.`
@@ -398,7 +398,7 @@ function ContributeQuiz() {
       setMessage("");
 
       await axios.post(
-        `${API_BASE_URL}/quizzes/contribute`,
+        `${API_URL}/quizzes/contribute`,
         {
           title: title.trim(),
           description: description.trim(),
@@ -461,7 +461,7 @@ function ContributeQuiz() {
       setMessage("");
 
       await axios.post(
-        `${API_BASE_URL}/blogs/contribute`,
+        `${API_URL}/blogs/contribute`,
         {
           title: title.trim(),
           description: description.trim(),
@@ -512,11 +512,11 @@ function ContributeQuiz() {
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
     >
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-8 py-32">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pt-32 sm:pt-36 md:pt-40 pb-20">
         <motion.div
           initial={{
             opacity: 0,
@@ -526,26 +526,24 @@ function ContributeQuiz() {
             opacity: 1,
             y: 0,
           }}
-          className="mb-16"
+          className="mb-12 md:mb-16"
         >
-          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-6 py-3 rounded-full mb-8 backdrop-blur-xl">
-            <FaBrain className="text-cyan-300" />
+          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-4 sm:px-6 py-3 rounded-full mb-8 backdrop-blur-xl max-w-full">
+            <FaBrain className="text-cyan-300 shrink-0" />
 
-            <p className="uppercase tracking-[0.3em] text-cyan-200 text-sm">
+            <p className="uppercase tracking-[0.18em] sm:tracking-[0.3em] text-cyan-200 text-xs sm:text-sm leading-6">
               Contribute to MindMirror
             </p>
           </div>
 
-          <h1 className="text-7xl font-bold leading-tight mb-8">
-            Share a Mind
-            <br />
-
+          <h1 className="font-bold leading-tight mb-6 md:mb-8 text-4xl sm:text-5xl md:text-7xl break-words">
+            Share a Mind{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
               Discovery
             </span>
           </h1>
 
-          <p className="text-slate-300 text-2xl leading-[2] max-w-4xl">
+          <p className="text-slate-300 text-lg sm:text-xl md:text-2xl leading-8 sm:leading-9 md:leading-[2] max-w-4xl">
             Contribute either a self-reflection
             quiz or a useful psychology blog
             resource for the MindMirror
@@ -553,14 +551,14 @@ function ContributeQuiz() {
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap gap-5 mb-12">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5 mb-10 md:mb-12">
           <button
             type="button"
             onClick={() => {
               setContributionType("quiz");
               setMessage("");
             }}
-            className={`px-8 py-5 rounded-3xl text-lg font-semibold flex items-center gap-4 transition ${
+            className={`px-6 sm:px-8 py-4 sm:py-5 rounded-3xl text-base sm:text-lg font-semibold flex items-center justify-center gap-4 transition ${
               contributionType === "quiz"
                 ? "bg-cyan-500/20 border border-cyan-400/30 text-cyan-200"
                 : "bg-white/10 border border-white/10 text-slate-300 hover:text-white"
@@ -576,7 +574,7 @@ function ContributeQuiz() {
               setContributionType("blog");
               setMessage("");
             }}
-            className={`px-8 py-5 rounded-3xl text-lg font-semibold flex items-center gap-4 transition ${
+            className={`px-6 sm:px-8 py-4 sm:py-5 rounded-3xl text-base sm:text-lg font-semibold flex items-center justify-center gap-4 transition ${
               contributionType === "blog"
                 ? "bg-cyan-500/20 border border-cyan-400/30 text-cyan-200"
                 : "bg-white/10 border border-white/10 text-slate-300 hover:text-white"
@@ -587,8 +585,8 @@ function ContributeQuiz() {
           </button>
         </div>
 
-        <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 md:p-12 shadow-2xl mb-12">
-          <h2 className="text-4xl font-bold mb-8">
+        <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] sm:rounded-[40px] p-6 sm:p-10 md:p-12 shadow-2xl mb-10 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-8">
             {contributionType === "quiz"
               ? "Quiz Details"
               : "Blog Details"}
@@ -605,7 +603,7 @@ function ContributeQuiz() {
                   ? "Quiz title"
                   : "Blog title"
               }
-              className="bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
             />
 
             <select
@@ -617,7 +615,7 @@ function ContributeQuiz() {
                   setCustomCategory("");
                 }
               }}
-              className="bg-slate-950 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition text-white"
+              className="w-full bg-slate-950 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition text-white"
             >
               {categories.map((item) => (
                 <option
@@ -638,7 +636,7 @@ function ContributeQuiz() {
                 setCustomCategory(e.target.value)
               }
               placeholder="Enter custom category..."
-              className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-6"
+              className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-6"
             />
           )}
 
@@ -652,7 +650,7 @@ function ContributeQuiz() {
                 ? "Describe what this quiz helps users understand..."
                 : "Describe what this blog/article helps users learn..."
             }
-            className="w-full min-h-[140px] bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-6"
+            className="w-full min-h-[140px] bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-6"
           ></textarea>
 
           {contributionType === "blog" && (
@@ -663,7 +661,7 @@ function ContributeQuiz() {
                   setBlogUrl(e.target.value)
                 }
                 placeholder="Blog/article link"
-                className="bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
               />
 
               <input
@@ -672,14 +670,14 @@ function ContributeQuiz() {
                   setBlogSource(e.target.value)
                 }
                 placeholder="Source name, example: APA, Verywell Mind, WHO..."
-                className="bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
               />
             </div>
           )}
         </div>
 
         {contributionType === "quiz" && (
-          <div className="space-y-10 mb-12">
+          <div className="space-y-8 md:space-y-10 mb-10 md:mb-12">
             {questions.map(
               (
                 questionItem,
@@ -695,10 +693,10 @@ function ContributeQuiz() {
                     opacity: 1,
                     y: 0,
                   }}
-                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl"
+                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] sm:rounded-[40px] p-6 sm:p-10 shadow-2xl"
                 >
-                  <div className="flex items-center justify-between gap-6 mb-8">
-                    <h2 className="text-3xl font-bold">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold">
                       Question{" "}
                       {questionIndex + 1}
                     </h2>
@@ -710,7 +708,7 @@ function ContributeQuiz() {
                           questionIndex
                         )
                       }
-                      className="bg-red-500/10 border border-red-400/20 text-red-300 px-5 py-3 rounded-2xl flex items-center gap-3 hover:bg-red-500/20 transition"
+                      className="bg-red-500/10 border border-red-400/20 text-red-300 px-5 py-3 rounded-2xl flex items-center justify-center gap-3 hover:bg-red-500/20 transition"
                     >
                       <FaTrash />
                       Remove Question
@@ -726,7 +724,7 @@ function ContributeQuiz() {
                       )
                     }
                     placeholder="Write your question..."
-                    className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition mb-8 placeholder:text-slate-400 text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition mb-8 placeholder:text-slate-400 text-white"
                   />
 
                   <div className="space-y-5">
@@ -751,7 +749,7 @@ function ContributeQuiz() {
                             placeholder={`Option ${
                               optionIndex + 1
                             }`}
-                            className="bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
+                            className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
                           />
 
                           <input
@@ -766,7 +764,7 @@ function ContributeQuiz() {
                                 e.target.value
                               )
                             }
-                            className="bg-white/5 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition text-white"
+                            className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition text-white"
                           />
 
                           <button
@@ -802,12 +800,12 @@ function ContributeQuiz() {
           </div>
         )}
 
-        <div className="flex flex-wrap gap-6 mb-10">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 mb-10">
           {contributionType === "quiz" && (
             <button
               type="button"
               onClick={addQuestion}
-              className="bg-white/10 border border-white/10 px-8 py-5 rounded-3xl text-lg font-semibold hover:bg-white/20 transition"
+              className="bg-white/10 border border-white/10 px-8 py-5 rounded-3xl text-base sm:text-lg font-semibold hover:bg-white/20 transition"
             >
               Add Another Question
             </button>
@@ -823,7 +821,7 @@ function ContributeQuiz() {
             }}
             onClick={handleSubmit}
             disabled={loading}
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-5 rounded-3xl text-lg font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-60 flex items-center gap-4"
+            className="bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-5 rounded-3xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-60 flex items-center justify-center gap-4"
           >
             {loading
               ? "Submitting..."
@@ -836,8 +834,8 @@ function ContributeQuiz() {
         </div>
 
         {message && (
-          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-8">
-            <p className="text-cyan-200 text-xl leading-9">
+          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-6 sm:p-8">
+            <p className="text-cyan-200 text-lg sm:text-xl leading-8 sm:leading-9">
               {message}
             </p>
           </div>
