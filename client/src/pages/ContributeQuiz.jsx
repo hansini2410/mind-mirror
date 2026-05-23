@@ -16,7 +16,7 @@ import "@fontsource/poppins";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000/api";
+  "https://mindmirror-backend-hit3.onrender.com/api";
 
 function ContributeQuiz() {
   const userData = JSON.parse(
