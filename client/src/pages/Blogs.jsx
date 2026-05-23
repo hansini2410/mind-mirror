@@ -29,14 +29,12 @@ function Blogs() {
   const [search, setSearch] =
     useState(initialTopic);
 
-  const [blogs, setBlogs] =
-    useState([]);
+  const [blogs, setBlogs] = useState([]);
 
   const [loading, setLoading] =
     useState(true);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchBlogs(initialTopic);
@@ -73,8 +71,7 @@ function Blogs() {
           )}`
         : `${API_URL}/blogs`;
 
-      const response =
-        await axios.get(endpoint);
+      const response = await axios.get(endpoint);
 
       setBlogs(response.data);
     } catch (error) {
@@ -90,7 +87,7 @@ function Blogs() {
 
   return (
     <div
-      className="min-h-screen text-white overflow-hidden relative"
+      className="min-h-screen text-white overflow-x-hidden relative"
       style={{
         fontFamily:
           "Poppins, sans-serif",
@@ -118,15 +115,26 @@ function Blogs() {
           <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-4 sm:px-6 py-3 rounded-full mb-8 backdrop-blur-xl max-w-full">
             <FaBrain className="text-blue-300 shrink-0" />
 
-            <p className="uppercase tracking-[0.18em] sm:tracking-widest text-blue-200 text-xs sm:text-sm leading-6">
+            <p className="uppercase tracking-[0.14em] sm:tracking-widest text-blue-200 text-xs sm:text-sm leading-6 break-words">
               MindMirror Psychology Library
             </p>
           </div>
 
-          <h1 className="font-bold mb-6 md:mb-8 leading-tight break-words text-4xl sm:text-5xl md:text-7xl">
-            Explore Emotional{" "}
-            <span className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
-              Wellness Resources
+          <h1 className="font-bold mb-6 md:mb-8 leading-[1.15] text-4xl sm:text-5xl md:text-7xl max-w-full">
+            <span className="block">
+              Explore
+            </span>
+
+            <span className="block">
+              Emotional
+            </span>
+
+            <span className="block bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
+              Wellness
+            </span>
+
+            <span className="block bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
+              Resources
             </span>
           </h1>
 
@@ -143,7 +151,7 @@ function Blogs() {
 
           <input
             type="text"
-            placeholder="Search anxiety, stress, trauma, relationships..."
+            placeholder="Search anxiety, stress, trauma..."
             value={search}
             onChange={(e) =>
               setSearch(e.target.value)
