@@ -39,7 +39,7 @@ function Register() {
       setError("");
 
       const response = await axios.post(
-        `${API_URL}/api/auth/register`,
+        `${API_URL}/auth/register`,
         {
           name,
           email,
