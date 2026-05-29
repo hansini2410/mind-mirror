@@ -12,6 +12,7 @@ import {
   FaBookOpen,
   FaHeart,
   FaChartLine,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 import "@fontsource/poppins";
@@ -233,6 +234,74 @@ function Dashboard() {
     };
   };
 
+  const getPersonalWellnessPlan = () => {
+    if (moodHistory.length === 0) {
+      return {
+        title: "Start Your Wellness Pattern",
+        description:
+          "Begin by saving one mood check-in today. Once you add a few check-ins, MindMirror will show more personal emotional guidance.",
+        actions: [
+          "Save your current mood once today.",
+          "Write one short sentence about why you feel that way.",
+          "Complete one assessment to understand your emotional pattern better.",
+        ],
+      };
+    }
+
+    const averageIntensity =
+      Number(getMoodSummary().averageIntensity);
+
+    const mostFrequentMood =
+      getMoodSummary().mostFrequentMood;
+
+    if (
+      mostFrequentMood === "Anxious" ||
+      mostFrequentMood === "Overwhelmed" ||
+      averageIntensity >= 7
+    ) {
+      return {
+        title: "Gentle Recovery Plan",
+        description:
+          "Your recent check-ins suggest that your emotional intensity may be high. This plan focuses on slowing down, reducing pressure, and creating mental space.",
+        actions: [
+          "Take a short break from screens for 10 minutes.",
+          "Write down the main thought that is bothering you.",
+          "Try one simple breathing or grounding exercise.",
+          "Avoid overloading your day with too many tasks.",
+        ],
+      };
+    }
+
+    if (
+      mostFrequentMood === "Tired" ||
+      averageIntensity >= 4
+    ) {
+      return {
+        title: "Balance and Energy Plan",
+        description:
+          "Your recent check-ins suggest a moderate emotional rhythm. This plan helps you balance rest, motivation, and self-awareness.",
+        actions: [
+          "Choose one small task and complete only that first.",
+          "Drink water and take a short movement break.",
+          "Sleep a little earlier if possible.",
+          "Read one psychology insight related to stress or motivation.",
+        ],
+      };
+    }
+
+    return {
+      title: "Growth Maintenance Plan",
+      description:
+        "Your recent check-ins suggest a calmer emotional pattern. This plan helps you maintain emotional awareness and continue personal growth.",
+      actions: [
+        "Continue saving regular mood check-ins.",
+        "Reflect on what helped you feel stable recently.",
+        "Try one new assessment to learn more about yourself.",
+        "Keep one healthy routine consistent this week.",
+      ],
+    };
+  };
+
   const getStatusStyle = (status) => {
     if (status === "approved") {
       return "bg-green-500/10 border-green-400/30 text-green-300";
@@ -246,6 +315,9 @@ function Dashboard() {
   };
 
   const moodSummary = getMoodSummary();
+
+  const wellnessPlan =
+    getPersonalWellnessPlan();
 
   const sections = [
     {
@@ -535,6 +607,45 @@ function Dashboard() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
+            Personal Wellness Plan
+          </h2>
+
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8 shadow-2xl">
+            <div className="flex items-start gap-5 mb-6">
+              <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 shrink-0">
+                <FaCheckCircle />
+              </div>
+
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold mb-3">
+                  {wellnessPlan.title}
+                </h3>
+
+                <p className="text-slate-300 text-base md:text-lg leading-8">
+                  {wellnessPlan.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {wellnessPlan.actions.map(
+                (action, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/5 border border-white/10 rounded-2xl p-5"
+                  >
+                    <p className="text-slate-300 leading-7">
+                      {index + 1}. {action}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
 
