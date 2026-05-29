@@ -60,30 +60,24 @@ function Dashboard() {
   const [moodMessage, setMoodMessage] =
     useState("");
 
-useEffect(() => {
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    window.scrollTo(0, 0);
 
-  const user = localStorage.getItem(
-    "mindmirrorUser"
-  );
+    const user = localStorage.getItem(
+      "mindmirrorUser"
+    );
 
-  if (!user) {
-    navigate("/login");
-    return;
-  }
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
-  fetchResults();
-  fetchMoods();
-  fetchMyContributions();
+    fetchResults();
+    fetchMoods();
+    fetchMyContributions();
 
-  /*
-    Blog contribution API is not available in your backend yet.
-    So we are not calling:
-    /api/blogs/my-contributions
-    because it gives 404.
-  */
-  setMyBlogContributions([]);
-}, []);
+    setMyBlogContributions([]);
+  }, []);
 
   const getAuthHeaders = () => {
     return {
@@ -302,11 +296,11 @@ useEffect(() => {
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
     >
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8 py-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-16">
         <motion.div
           initial={{
             opacity: 0,
@@ -316,26 +310,24 @@ useEffect(() => {
             opacity: 1,
             y: 0,
           }}
-          className="mb-20"
+          className="mb-12 md:mb-16"
         >
-          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-6 py-3 rounded-full mb-8 backdrop-blur-xl">
-            <FaMoon className="text-cyan-300" />
+          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-4 sm:px-5 py-2.5 rounded-full mb-6 backdrop-blur-xl max-w-full">
+            <FaMoon className="text-cyan-300 shrink-0" />
 
-            <p className="uppercase tracking-[0.3em] text-cyan-200 text-sm">
+            <p className="uppercase tracking-[0.18em] sm:tracking-[0.25em] text-cyan-200 text-xs sm:text-sm leading-5">
               Your Emotional Space
             </p>
           </div>
 
-          <h1 className="text-7xl font-bold leading-tight mb-8">
-            Welcome back,
-            <br />
-
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-5 md:mb-6 break-words">
+            Welcome back,{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
               {userName}
             </span>
           </h1>
 
-          <p className="text-slate-300 text-2xl leading-[2] max-w-4xl">
+          <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-8 md:leading-9 max-w-4xl">
             Your personal emotional wellness
             space will evolve naturally as
             you explore assessments,
@@ -344,48 +336,48 @@ useEffect(() => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6 mb-14 md:mb-16">
           {sections.map((section, index) => (
             <motion.div
               key={index}
               whileHover={{
-                y: -8,
+                y: -6,
               }}
-              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[36px] p-10 shadow-2xl"
+              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 md:p-7 shadow-2xl"
             >
-              <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300 mb-8">
+              <div className="bg-cyan-500/20 w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-2xl md:text-3xl text-cyan-300 mb-5">
                 {section.icon}
               </div>
 
-              <h2 className="text-3xl font-bold mb-6 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
                 {section.title}
               </h2>
 
-              <p className="text-slate-300 text-lg leading-9">
+              <p className="text-slate-300 text-base leading-7">
                 {section.description}
               </p>
             </motion.div>
           ))}
         </div>
 
-        <div className="mb-20">
-          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12 shadow-2xl">
-            <h2 className="text-5xl font-bold mb-6">
+        <div className="mb-14 md:mb-16">
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8 shadow-2xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Daily Emotional Check-In
             </h2>
 
-            <p className="text-slate-300 text-xl leading-[2] mb-10">
+            <p className="text-slate-300 text-base md:text-lg leading-8 mb-7">
               Choose how you feel, rate the
               intensity, and optionally leave
               a small reflection for yourself.
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-7">
               {moods.map((mood) => (
                 <motion.button
                   key={mood}
                   whileHover={{
-                    scale: 1.03,
+                    scale: 1.02,
                   }}
                   whileTap={{
                     scale: 0.98,
@@ -394,7 +386,7 @@ useEffect(() => {
                     setSelectedMood(mood);
                     setMoodMessage("");
                   }}
-                  className={`p-6 rounded-3xl border transition text-xl font-medium ${
+                  className={`p-4 md:p-5 rounded-2xl border transition text-base md:text-lg font-medium ${
                     selectedMood === mood
                       ? "bg-cyan-500/20 border-cyan-400 text-cyan-200"
                       : "bg-white/5 border-white/10 hover:bg-cyan-500/10"
@@ -405,13 +397,13 @@ useEffect(() => {
               ))}
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-8">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="text-2xl font-bold">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl md:text-2xl font-bold">
                   Emotional Intensity
                 </h3>
 
-                <p className="text-cyan-300 text-xl font-semibold">
+                <p className="text-cyan-300 text-lg font-semibold">
                   {intensity}/10
                 </p>
               </div>
@@ -434,19 +426,19 @@ useEffect(() => {
                 setNote(e.target.value)
               }
               placeholder="Optional reflection note..."
-              className="w-full min-h-[140px] bg-white/5 border border-white/10 rounded-3xl p-6 text-lg text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 transition mb-8"
+              className="w-full min-h-[110px] bg-white/5 border border-white/10 rounded-2xl p-5 text-base text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 transition mb-6"
             ></textarea>
 
             <motion.button
               whileHover={{
-                scale: 1.02,
+                scale: 1.01,
               }}
               whileTap={{
                 scale: 0.98,
               }}
               onClick={saveMood}
               disabled={moodLoading}
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 p-5 rounded-3xl text-xl font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-60"
+              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-2xl text-base md:text-lg font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-60"
             >
               {moodLoading
                 ? "Saving Emotional Check-In..."
@@ -454,90 +446,90 @@ useEffect(() => {
             </motion.button>
 
             {moodMessage && (
-              <p className="mt-8 text-cyan-300 text-lg">
+              <p className="mt-6 text-cyan-300 text-base">
                 {moodMessage}
               </p>
             )}
           </div>
         </div>
 
-        <div className="mb-20">
-          <h2 className="text-5xl font-bold mb-10">
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
             Mood Pattern Summary
           </h2>
 
-          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12 shadow-2xl">
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8 shadow-2xl">
             {moodHistory.length === 0 ? (
-              <p className="text-slate-300 text-xl leading-[2]">
+              <p className="text-slate-300 text-base md:text-lg leading-8">
                 {moodSummary.insight}
               </p>
             ) : (
               <>
-                <div className="grid md:grid-cols-3 gap-8 mb-10">
+                <div className="grid md:grid-cols-3 gap-5 md:gap-6 mb-8">
                   <motion.div
                     whileHover={{
-                      y: -6,
+                      y: -5,
                     }}
-                    className="bg-white/5 border border-white/10 rounded-[32px] p-8"
+                    className="bg-white/5 border border-white/10 rounded-[24px] p-6"
                   >
-                    <div className="bg-cyan-500/20 w-16 h-16 rounded-3xl flex items-center justify-center text-3xl text-cyan-300 mb-6">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
                       <FaChartLine />
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold mb-3">
                       Average Intensity
                     </h3>
 
-                    <p className="text-cyan-300 text-4xl font-bold">
+                    <p className="text-cyan-300 text-3xl font-bold">
                       {moodSummary.averageIntensity}/10
                     </p>
                   </motion.div>
 
                   <motion.div
                     whileHover={{
-                      y: -6,
+                      y: -5,
                     }}
-                    className="bg-white/5 border border-white/10 rounded-[32px] p-8"
+                    className="bg-white/5 border border-white/10 rounded-[24px] p-6"
                   >
-                    <div className="bg-cyan-500/20 w-16 h-16 rounded-3xl flex items-center justify-center text-3xl text-cyan-300 mb-6">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
                       <FaHeart />
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold mb-3">
                       Most Frequent Mood
                     </h3>
 
-                    <p className="text-cyan-300 text-4xl font-bold">
+                    <p className="text-cyan-300 text-3xl font-bold break-words">
                       {moodSummary.mostFrequentMood}
                     </p>
                   </motion.div>
 
                   <motion.div
                     whileHover={{
-                      y: -6,
+                      y: -5,
                     }}
-                    className="bg-white/5 border border-white/10 rounded-[32px] p-8"
+                    className="bg-white/5 border border-white/10 rounded-[24px] p-6"
                   >
-                    <div className="bg-cyan-500/20 w-16 h-16 rounded-3xl flex items-center justify-center text-3xl text-cyan-300 mb-6">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
                       <FaMoon />
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold mb-3">
                       Total Check-Ins
                     </h3>
 
-                    <p className="text-cyan-300 text-4xl font-bold">
+                    <p className="text-cyan-300 text-3xl font-bold">
                       {moodSummary.totalCheckIns}
                     </p>
                   </motion.div>
                 </div>
 
-                <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-8">
-                  <h3 className="text-3xl font-bold mb-5">
+                <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-6">
+                  <h3 className="text-2xl font-bold mb-4">
                     Emotional Insight
                   </h3>
 
-                  <p className="text-slate-300 text-xl leading-[2]">
+                  <p className="text-slate-300 text-base md:text-lg leading-8">
                     {moodSummary.insight}
                   </p>
                 </div>
@@ -546,36 +538,36 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="mb-20">
-          <h2 className="text-5xl font-bold mb-10">
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
             My Quiz Contributions
           </h2>
 
           {myContributions.length === 0 ? (
-            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12">
-              <p className="text-slate-300 text-xl leading-[2]">
+            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
+              <p className="text-slate-300 text-base md:text-lg leading-8">
                 Quizzes you contribute to
                 MindMirror will appear here
                 with their review status.
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6">
               {myContributions.map((quiz) => (
                 <motion.div
                   key={quiz._id}
                   whileHover={{
-                    y: -6,
+                    y: -5,
                   }}
-                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[36px] p-10 shadow-2xl"
+                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 md:p-7 shadow-2xl"
                 >
-                  <div className="flex items-center justify-between gap-5 mb-6">
-                    <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300">
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300">
                       <FaBrain />
                     </div>
 
                     <span
-                      className={`px-5 py-2 rounded-full border text-sm font-semibold ${getStatusStyle(
+                      className={`px-4 py-2 rounded-full border text-xs font-semibold ${getStatusStyle(
                         quiz.status
                       )}`}
                     >
@@ -584,33 +576,33 @@ useEffect(() => {
                     </span>
                   </div>
 
-                  <p className="text-cyan-300 uppercase tracking-[0.3em] text-sm mb-4">
+                  <p className="text-cyan-300 uppercase tracking-[0.22em] text-xs mb-3">
                     {quiz.category ||
                       "Self Awareness"}
                   </p>
 
-                  <h3 className="text-3xl font-bold mb-4">
+                  <h3 className="text-2xl font-bold mb-3">
                     {quiz.title}
                   </h3>
 
-                  <p className="text-slate-300 leading-8 mb-6">
+                  <p className="text-slate-300 leading-7 mb-5">
                     {quiz.description}
                   </p>
 
-                  <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-6">
-                    <p className="text-slate-300">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-5">
+                    <p className="text-slate-300 text-sm md:text-base">
                       Questions submitted:{" "}
                       {quiz.questions?.length || 0}
                     </p>
                   </div>
 
                   {quiz.feedback && (
-                    <div className="bg-red-500/10 border border-red-400/20 rounded-3xl p-6">
-                      <h4 className="text-red-300 font-semibold mb-3">
+                    <div className="bg-red-500/10 border border-red-400/20 rounded-2xl p-5">
+                      <h4 className="text-red-300 font-semibold mb-2">
                         Admin Feedback
                       </h4>
 
-                      <p className="text-slate-300 leading-8">
+                      <p className="text-slate-300 leading-7">
                         {quiz.feedback}
                       </p>
                     </div>
@@ -621,14 +613,14 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="mb-20">
-          <h2 className="text-5xl font-bold mb-10">
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
             My Blog Contributions
           </h2>
 
           {myBlogContributions.length === 0 ? (
-            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12">
-              <p className="text-slate-300 text-xl leading-[2]">
+            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
+              <p className="text-slate-300 text-base md:text-lg leading-8">
                 Blog resources you contribute
                 to MindMirror will appear here
                 after the blog contribution API
@@ -636,22 +628,22 @@ useEffect(() => {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6">
               {myBlogContributions.map((blog) => (
                 <motion.div
                   key={blog._id}
                   whileHover={{
-                    y: -6,
+                    y: -5,
                   }}
-                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[36px] p-10 shadow-2xl"
+                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 md:p-7 shadow-2xl"
                 >
-                  <div className="flex items-center justify-between gap-5 mb-6">
-                    <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300">
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300">
                       <FaBookOpen />
                     </div>
 
                     <span
-                      className={`px-5 py-2 rounded-full border text-sm font-semibold ${getStatusStyle(
+                      className={`px-4 py-2 rounded-full border text-xs font-semibold ${getStatusStyle(
                         blog.status
                       )}`}
                     >
@@ -660,20 +652,20 @@ useEffect(() => {
                     </span>
                   </div>
 
-                  <p className="text-cyan-300 uppercase tracking-[0.3em] text-sm mb-4">
+                  <p className="text-cyan-300 uppercase tracking-[0.22em] text-xs mb-3">
                     {blog.category ||
                       "Psychology"}
                   </p>
 
-                  <h3 className="text-3xl font-bold mb-4">
+                  <h3 className="text-2xl font-bold mb-3">
                     {blog.title}
                   </h3>
 
-                  <p className="text-slate-300 leading-8 mb-6">
+                  <p className="text-slate-300 leading-7 mb-5">
                     {blog.description}
                   </p>
 
-                  <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-6">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-5">
                     <p className="text-slate-300 mb-3">
                       Source:{" "}
                       <span className="text-cyan-300">
@@ -695,12 +687,12 @@ useEffect(() => {
                   </div>
 
                   {blog.feedback && (
-                    <div className="bg-red-500/10 border border-red-400/20 rounded-3xl p-6">
-                      <h4 className="text-red-300 font-semibold mb-3">
+                    <div className="bg-red-500/10 border border-red-400/20 rounded-2xl p-5">
+                      <h4 className="text-red-300 font-semibold mb-2">
                         Admin Feedback
                       </h4>
 
-                      <p className="text-slate-300 leading-8">
+                      <p className="text-slate-300 leading-7">
                         {blog.feedback}
                       </p>
                     </div>
@@ -711,14 +703,14 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="mb-20">
-          <h2 className="text-5xl font-bold mb-10">
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
             Recent Mood Check-Ins
           </h2>
 
           {moodHistory.length === 0 ? (
-            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12">
-              <p className="text-slate-300 text-xl leading-[2]">
+            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
+              <p className="text-slate-300 text-base md:text-lg leading-8">
                 Your mood check-ins will
                 appear here once you begin
                 saving daily emotional
@@ -726,37 +718,37 @@ useEffect(() => {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
               {moodHistory
                 .slice(0, 6)
                 .map((item) => (
                   <motion.div
                     key={item._id}
                     whileHover={{
-                      y: -6,
+                      y: -5,
                     }}
-                    className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[36px] p-8 shadow-2xl"
+                    className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 shadow-2xl"
                   >
-                    <div className="bg-cyan-500/20 w-16 h-16 rounded-3xl flex items-center justify-center text-3xl text-cyan-300 mb-6">
+                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
                       <FaHeart />
                     </div>
 
-                    <h3 className="text-3xl font-bold mb-4">
+                    <h3 className="text-2xl font-bold mb-3">
                       {item.mood}
                     </h3>
 
-                    <p className="text-slate-300 mb-4">
+                    <p className="text-slate-300 mb-3">
                       Intensity:{" "}
                       {item.intensity}/10
                     </p>
 
                     {item.note && (
-                      <p className="text-slate-300 leading-8 mb-5">
+                      <p className="text-slate-300 leading-7 mb-4">
                         “{item.note}”
                       </p>
                     )}
 
-                    <p className="text-slate-400">
+                    <p className="text-slate-400 text-sm">
                       Saved on{" "}
                       {new Date(
                         item.createdAt
@@ -768,14 +760,14 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="mb-20">
-          <h2 className="text-5xl font-bold mb-10">
+        <div className="mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-7">
             Your Reflections
           </h2>
 
           {results.length === 0 ? (
-            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12">
-              <p className="text-slate-300 text-xl leading-[2]">
+            <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
+              <p className="text-slate-300 text-base md:text-lg leading-8">
                 Your reflections will begin
                 appearing here as you complete
                 emotional assessments and
@@ -783,36 +775,36 @@ useEffect(() => {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6">
               {results.map((result) => (
                 <motion.div
                   whileHover={{
-                    y: -6,
+                    y: -5,
                   }}
                   key={result._id}
-                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[36px] p-10 shadow-2xl"
+                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 md:p-7 shadow-2xl"
                 >
-                  <div className="bg-cyan-500/20 w-20 h-20 rounded-3xl flex items-center justify-center text-4xl text-cyan-300 mb-8">
+                  <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
                     <FaBrain />
                   </div>
 
-                  <h3 className="text-3xl font-bold mb-4">
+                  <h3 className="text-2xl font-bold mb-3">
                     {result.quizTitle}
                   </h3>
 
-                  <p className="text-cyan-300 text-lg mb-6">
+                  <p className="text-cyan-300 text-base mb-5">
                     {result.evaluation}
                   </p>
 
-                  <p className="text-slate-400 mb-8">
+                  <p className="text-slate-400 mb-6 text-sm">
                     Completed on{" "}
                     {new Date(
                       result.completedAt
                     ).toLocaleDateString()}
                   </p>
 
-                  <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
-                    <p className="text-slate-300 leading-8">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                    <p className="text-slate-300 leading-7">
                       Emotional reflection
                       score: {result.score}
                     </p>
