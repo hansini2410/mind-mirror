@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import {
   FaBrain,
   FaArrowRight,
+  FaArrowLeft,
   FaBookOpen,
 } from "react-icons/fa";
 
@@ -28,8 +29,8 @@ function QuizDetails() {
   const [currentQuestion, setCurrentQuestion] =
     useState(0);
 
-  const [selectedAnswer, setSelectedAnswer] =
-    useState(null);
+  const [selectedAnswers, setSelectedAnswers] =
+    useState([]);
 
   const [score, setScore] = useState(0);
 
@@ -57,6 +58,10 @@ function QuizDetails() {
         parsedData.currentQuestion || 0
       );
 
+      setSelectedAnswers(
+        parsedData.selectedAnswers || []
+      );
+
       setScore(parsedData.score || 0);
 
       setSavedAnswers(
@@ -76,6 +81,7 @@ function QuizDetails() {
       storageKey,
       JSON.stringify({
         currentQuestion,
+        selectedAnswers,
         score,
         savedAnswers,
         showResult,
@@ -84,6 +90,7 @@ function QuizDetails() {
   }, [
     quiz,
     currentQuestion,
+    selectedAnswers,
     score,
     savedAnswers,
     showResult,
@@ -209,7 +216,6 @@ function QuizDetails() {
                 "emotional intelligence"
               ),
             },
-
             {
               title:
                 "How Sleep Affects Mental Wellness",
@@ -240,7 +246,6 @@ function QuizDetails() {
                 "anxiety overthinking"
               ),
             },
-
             {
               title:
                 "The Psychology Behind Emotional Burnout",
@@ -270,7 +275,6 @@ function QuizDetails() {
               "trauma triggers"
             ),
           },
-
           {
             title:
               "The Science of Dopamine and Motivation",
@@ -303,7 +307,6 @@ function QuizDetails() {
                 "emotional intelligence"
               ),
             },
-
             {
               title:
                 "Understanding Anxiety and Overthinking",
@@ -335,7 +338,6 @@ function QuizDetails() {
                 "emotional intelligence"
               ),
             },
-
             {
               title:
                 "How Sleep Affects Mental Wellness",
@@ -366,7 +368,6 @@ function QuizDetails() {
               "emotional intelligence"
             ),
           },
-
           {
             title:
               "How Sleep Affects Mental Wellness",
@@ -449,6 +450,49 @@ function QuizDetails() {
     };
   };
 
+  const calculateFinalScore = () => {
+    return quiz.questions.reduce(
+      (total, questionItem, index) => {
+        const selectedOptionId =
+          selectedAnswers[index];
+
+        const selectedOption =
+          questionItem.options.find(
+            (option) =>
+              option._id === selectedOptionId
+          );
+
+        return (
+          total +
+          Number(selectedOption?.score || 0)
+        );
+      },
+      0
+    );
+  };
+
+  const createAnswerSummary = () => {
+    return quiz.questions.map(
+      (questionItem, index) => {
+        const selectedOptionId =
+          selectedAnswers[index];
+
+        const selectedOption =
+          questionItem.options.find(
+            (option) =>
+              option._id === selectedOptionId
+          );
+
+        return {
+          question: questionItem.question,
+          answer:
+            selectedOption?.text ||
+            "Not answered",
+        };
+      }
+    );
+  };
+
   const saveResultToDatabase =
     async (
       finalScore,
@@ -469,9 +513,7 @@ function QuizDetails() {
           `${API_URL}/results`,
           {
             quizTitle: quiz.title,
-
             score: finalScore,
-
             evaluation:
               finalEvaluation.title,
           },
@@ -486,72 +528,65 @@ function QuizDetails() {
       }
     };
 
-  const handleNextQuestion =
-    async () => {
-      if (selectedAnswer === null) {
-        return;
-      }
+  const handleAnswerSelect = (optionId) => {
+    const updatedAnswers = [
+      ...selectedAnswers,
+    ];
 
-      const selectedOption =
-        quiz.questions[
-          currentQuestion
-        ].options.find(
-          (option) =>
-            option._id ===
-            selectedAnswer
-        );
+    updatedAnswers[currentQuestion] =
+      optionId;
 
-      const updatedScore =
-        score + selectedOption.score;
+    setSelectedAnswers(updatedAnswers);
+  };
 
-      const updatedAnswers = [
-        ...savedAnswers,
-        {
-          question:
-            quiz.questions[
-              currentQuestion
-            ].question,
+  const handlePreviousQuestion = () => {
+    if (currentQuestion === 0) {
+      return;
+    }
 
-          answer:
-            selectedOption.text,
-        },
-      ];
+    setCurrentQuestion(
+      currentQuestion - 1
+    );
+  };
 
-      setSavedAnswers(updatedAnswers);
+  const handleNextQuestion = async () => {
+    if (!selectedAnswers[currentQuestion]) {
+      return;
+    }
 
-      setSelectedAnswer(null);
+    if (
+      currentQuestion + 1 <
+      quiz.questions.length
+    ) {
+      setCurrentQuestion(
+        currentQuestion + 1
+      );
 
-      if (
-        currentQuestion + 1 <
-        quiz.questions.length
-      ) {
-        setScore(updatedScore);
+      return;
+    }
 
-        setCurrentQuestion(
-          currentQuestion + 1
-        );
-      } else {
-        const finalEvaluation =
-          getEvaluation(
-            updatedScore
-          );
+    const finalScore =
+      calculateFinalScore();
 
-        await saveResultToDatabase(
-          updatedScore,
-          finalEvaluation
-        );
+    const finalEvaluation =
+      getEvaluation(finalScore);
 
-        setScore(updatedScore);
+    const finalSavedAnswers =
+      createAnswerSummary();
 
-        setSavedAnswers(updatedAnswers);
+    await saveResultToDatabase(
+      finalScore,
+      finalEvaluation
+    );
 
-        setShowResult(true);
+    setScore(finalScore);
 
-        localStorage.removeItem(
-          storageKey
-        );
-      }
-    };
+    setSavedAnswers(finalSavedAnswers);
+
+    setShowResult(true);
+
+    localStorage.removeItem(storageKey);
+  };
 
   if (!quiz) {
     return (
@@ -563,6 +598,9 @@ function QuizDetails() {
 
   const question =
     quiz.questions[currentQuestion];
+
+  const selectedAnswer =
+    selectedAnswers[currentQuestion];
 
   const evaluation = getEvaluation();
 
@@ -576,7 +614,6 @@ function QuizDetails() {
         style={{
           fontFamily:
             "Poppins, sans-serif",
-
           background:
             "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
         }}
@@ -765,7 +802,6 @@ function QuizDetails() {
       style={{
         fontFamily:
           "Poppins, sans-serif",
-
         background:
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
@@ -849,7 +885,7 @@ function QuizDetails() {
                 }}
                 key={option._id}
                 onClick={() =>
-                  setSelectedAnswer(
+                  handleAnswerSelect(
                     option._id
                   )
                 }
@@ -868,23 +904,47 @@ function QuizDetails() {
           )}
         </div>
 
-        <motion.button
-          whileHover={{
-            scale: 1.01,
-          }}
-          whileTap={{
-            scale: 0.98,
-          }}
-          onClick={
-            handleNextQuestion
-          }
-          className="mt-6 sm:mt-7 w-full bg-gradient-to-r from-cyan-500 to-blue-600 transition p-4 sm:p-5 rounded-2xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20"
-        >
-          {currentQuestion + 1 ===
-          quiz.questions.length
-            ? "Complete Assessment"
-            : "Continue Reflection"}
-        </motion.button>
+        <div className="mt-6 sm:mt-7 grid grid-cols-2 gap-4">
+          <motion.button
+            whileHover={{
+              scale: 1.01,
+            }}
+            whileTap={{
+              scale: 0.98,
+            }}
+            onClick={
+              handlePreviousQuestion
+            }
+            disabled={
+              currentQuestion === 0
+            }
+            className="bg-white/10 border border-white/10 transition p-4 sm:p-5 rounded-2xl text-base sm:text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          >
+            <FaArrowLeft />
+            Previous
+          </motion.button>
+
+          <motion.button
+            whileHover={{
+              scale: 1.01,
+            }}
+            whileTap={{
+              scale: 0.98,
+            }}
+            onClick={
+              handleNextQuestion
+            }
+            disabled={
+              !selectedAnswer
+            }
+            className="bg-gradient-to-r from-cyan-500 to-blue-600 transition p-4 sm:p-5 rounded-2xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {currentQuestion + 1 ===
+            quiz.questions.length
+              ? "Complete"
+              : "Next"}
+          </motion.button>
+        </div>
       </motion.div>
     </div>
   );
