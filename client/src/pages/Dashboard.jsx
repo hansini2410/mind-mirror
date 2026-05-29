@@ -60,28 +60,30 @@ function Dashboard() {
   const [moodMessage, setMoodMessage] =
     useState("");
 
-  useEffect(() => {
-    const user = localStorage.getItem(
-      "mindmirrorUser"
-    );
+useEffect(() => {
+  window.scrollTo(0, 0);
 
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+  const user = localStorage.getItem(
+    "mindmirrorUser"
+  );
 
-    fetchResults();
-    fetchMoods();
-    fetchMyContributions();
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
-    /*
-      Blog contribution API is not available in your backend yet.
-      So we are not calling:
-      /api/blogs/my-contributions
-      because it gives 404.
-    */
-    setMyBlogContributions([]);
-  }, []);
+  fetchResults();
+  fetchMoods();
+  fetchMyContributions();
+
+  /*
+    Blog contribution API is not available in your backend yet.
+    So we are not calling:
+    /api/blogs/my-contributions
+    because it gives 404.
+  */
+  setMyBlogContributions([]);
+}, []);
 
   const getAuthHeaders = () => {
     return {
