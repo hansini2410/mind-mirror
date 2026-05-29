@@ -137,6 +137,17 @@ function Navbar() {
             </motion.button>
           </Link>
 
+          <Link to="/mindcare">
+            <motion.button
+              whileHover={{
+                scale: 1.03,
+              }}
+              className={navButtonClass("/mindcare")}
+            >
+              MindCare
+            </motion.button>
+          </Link>
+
           {user ? (
             <>
               <Link to="/contribute">
@@ -266,6 +277,15 @@ function Navbar() {
             >
               <button className={mobileNavButtonClass("/blogs")}>
                 Insights
+              </button>
+            </Link>
+
+            <Link
+              to="/mindcare"
+              onClick={closeMenu}
+            >
+              <button className={mobileNavButtonClass("/mindcare")}>
+                MindCare
               </button>
             </Link>
 

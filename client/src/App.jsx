@@ -25,6 +25,8 @@ import ContributeQuiz from "./pages/ContributeQuiz";
 
 import AdminDashboard from "./pages/AdminDashboard";
 
+import MindCare from "./pages/MindCare";
+
 function ProtectedRoute({ children }) {
   const userData = JSON.parse(
     localStorage.getItem("mindmirrorUser") ||
@@ -79,6 +81,11 @@ function App() {
         <Route
           path="/blogs"
           element={<Blogs />}
+        />
+
+        <Route
+          path="/mindcare"
+          element={<MindCare />}
         />
 
         <Route
