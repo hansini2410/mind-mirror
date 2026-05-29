@@ -6,28 +6,41 @@ import { motion } from "framer-motion";
 
 import { Link, useNavigate } from "react-router-dom";
 
-import { FaBrain, FaHeart } from "react-icons/fa";
+import {
+  FaBrain,
+  FaHeart,
+} from "react-icons/fa";
 
 import "@fontsource/poppins";
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://mindmirror-backend-hit3.onrender.com/api";
 
 function Register() {
   const navigate = useNavigate();
 
-  const API_URL =
-    import.meta.env.VITE_API_URL || "https://mindmirror-backend-hit3.onrender.com/api";
+  const [name, setName] =
+    useState("");
 
-  const [name, setName] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  const [email, setEmail] = useState("");
+  const [password, setPassword] =
+    useState("");
 
-  const [password, setPassword] = useState("");
+  const [loading, setLoading] =
+    useState(false);
 
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState("");
 
   const handleRegister = async () => {
-    if (!name.trim() || !email.trim() || !password.trim()) {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !password.trim()
+    ) {
       setError("Please fill all the fields.");
 
       return;
@@ -41,8 +54,8 @@ function Register() {
       const response = await axios.post(
         `${API_URL}/auth/register`,
         {
-          name,
-          email,
+          name: name.trim(),
+          email: email.trim(),
           password,
         }
       );
@@ -51,6 +64,8 @@ function Register() {
         "mindmirrorUser",
         JSON.stringify(response.data)
       );
+
+      window.scrollTo(0, 0);
 
       navigate("/dashboard");
     } catch (error) {
@@ -65,7 +80,7 @@ function Register() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden text-white"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-28 pb-16 relative overflow-hidden text-white"
       style={{
         fontFamily: "Poppins, sans-serif",
 
@@ -73,44 +88,43 @@ function Register() {
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
     >
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
       <motion.div
         initial={{
           opacity: 0,
-          y: 40,
+          y: 30,
         }}
         animate={{
           opacity: 1,
           y: 0,
         }}
-        className="relative z-10 w-full max-w-xl bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12 shadow-2xl"
+        className="relative z-10 w-full max-w-lg bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] sm:rounded-[34px] p-6 sm:p-8 md:p-10 shadow-2xl"
       >
-        <div className="bg-cyan-500/20 w-24 h-24 rounded-3xl flex items-center justify-center text-5xl text-cyan-300 mb-10">
+        <div className="bg-cyan-500/20 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl text-cyan-300 mb-7">
           <FaBrain />
         </div>
 
-        <p className="uppercase tracking-[0.3em] text-cyan-300 text-sm mb-6">
+        <p className="uppercase tracking-[0.2em] sm:tracking-[0.28em] text-cyan-300 text-xs mb-4 leading-6">
           MindMirror Emotional Wellness
         </p>
 
-        <h1 className="text-6xl font-bold leading-tight mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5">
           Begin Your
           <br />
-
           Discovery
         </h1>
 
-        <p className="text-slate-300 text-xl leading-[2] mb-10">
+        <p className="text-slate-300 text-base sm:text-lg leading-8 mb-8">
           Create your emotional reflection
           space and begin exploring
           psychology, emotional patterns,
           and self-awareness insights.
         </p>
 
-        <div className="space-y-6 mb-8">
+        <div className="space-y-4 mb-7">
           <input
             type="text"
             placeholder="Full Name"
@@ -118,7 +132,7 @@ function Register() {
             onChange={(e) =>
               setName(e.target.value)
             }
-            className="w-full bg-white/10 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition"
+            className="w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-base outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
           />
 
           <input
@@ -128,7 +142,7 @@ function Register() {
             onChange={(e) =>
               setEmail(e.target.value)
             }
-            className="w-full bg-white/10 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition"
+            className="w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-base outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
           />
 
           <input
@@ -138,12 +152,12 @@ function Register() {
             onChange={(e) =>
               setPassword(e.target.value)
             }
-            className="w-full bg-white/10 border border-white/10 rounded-3xl p-5 text-lg outline-none focus:border-cyan-400 transition"
+            className="w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-base outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
           />
         </div>
 
         {error && (
-          <div className="mb-6 bg-red-500/20 border border-red-500/20 text-red-200 p-4 rounded-2xl">
+          <div className="mb-6 bg-red-500/20 border border-red-500/20 text-red-200 p-4 rounded-2xl text-sm sm:text-base">
             {error}
           </div>
         )}
@@ -157,7 +171,7 @@ function Register() {
           }}
           onClick={handleRegister}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 p-5 rounded-3xl text-xl font-semibold shadow-2xl shadow-blue-500/20 flex items-center justify-center gap-4 disabled:opacity-60"
+          className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-2xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading
             ? "Creating Space..."
@@ -166,8 +180,8 @@ function Register() {
           <FaHeart />
         </motion.button>
 
-        <div className="mt-10 text-center">
-          <p className="text-slate-300">
+        <div className="mt-8 text-center">
+          <p className="text-slate-300 text-sm sm:text-base">
             Already part of MindMirror?
           </p>
 
@@ -176,7 +190,7 @@ function Register() {
               whileHover={{
                 scale: 1.03,
               }}
-              className="mt-4 text-cyan-300 text-lg"
+              className="mt-3 text-cyan-300 text-base"
             >
               Return to Your Space
             </motion.button>
