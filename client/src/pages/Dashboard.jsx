@@ -24,48 +24,34 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const userData = JSON.parse(
-    localStorage.getItem("mindmirrorUser") ||
-      "null"
+    localStorage.getItem("mindmirrorUser") || "null"
   );
 
-  const userName =
-    userData?.user?.name || "User";
+  const userName = userData?.user?.name || "User";
 
-  const [results, setResults] =
+  const [results, setResults] = useState([]);
+
+  const [moodHistory, setMoodHistory] = useState([]);
+
+  const [myContributions, setMyContributions] = useState([]);
+
+  const [myBlogContributions, setMyBlogContributions] =
     useState([]);
 
-  const [moodHistory, setMoodHistory] =
-    useState([]);
+  const [selectedMood, setSelectedMood] = useState("");
 
-  const [myContributions, setMyContributions] =
-    useState([]);
+  const [intensity, setIntensity] = useState(5);
 
-  const [
-    myBlogContributions,
-    setMyBlogContributions,
-  ] = useState([]);
+  const [note, setNote] = useState("");
 
-  const [selectedMood, setSelectedMood] =
-    useState("");
+  const [moodLoading, setMoodLoading] = useState(false);
 
-  const [intensity, setIntensity] =
-    useState(5);
-
-  const [note, setNote] =
-    useState("");
-
-  const [moodLoading, setMoodLoading] =
-    useState(false);
-
-  const [moodMessage, setMoodMessage] =
-    useState("");
+  const [moodMessage, setMoodMessage] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const user = localStorage.getItem(
-      "mindmirrorUser"
-    );
+    const user = localStorage.getItem("mindmirrorUser");
 
     if (!user) {
       navigate("/login");
@@ -150,10 +136,7 @@ function Dashboard() {
         getAuthHeaders()
       );
 
-      setMoodHistory([
-        response.data,
-        ...moodHistory,
-      ]);
+      setMoodHistory([response.data, ...moodHistory]);
 
       setMoodMessage(
         "Your emotional check-in has been saved."
@@ -186,13 +169,11 @@ function Dashboard() {
       };
     }
 
-    const totalIntensity =
-      moodHistory.reduce(
-        (total, item) =>
-          total +
-          Number(item.intensity || 0),
-        0
-      );
+    const totalIntensity = moodHistory.reduce(
+      (total, item) =>
+        total + Number(item.intensity || 0),
+      0
+    );
 
     const averageIntensity = (
       totalIntensity / moodHistory.length
@@ -205,11 +186,9 @@ function Dashboard() {
         (moodCounts[item.mood] || 0) + 1;
     });
 
-    const mostFrequentMood =
-      Object.keys(moodCounts).sort(
-        (a, b) =>
-          moodCounts[b] - moodCounts[a]
-      )[0];
+    const mostFrequentMood = Object.keys(moodCounts).sort(
+      (a, b) => moodCounts[b] - moodCounts[a]
+    )[0];
 
     let insight =
       "Your recent emotional check-ins show a developing pattern of self-awareness.";
@@ -245,7 +224,110 @@ function Dashboard() {
     return "bg-yellow-500/10 border-yellow-400/30 text-yellow-300";
   };
 
+  const getMoodEmoji = (mood) => {
+    const moodEmojis = {
+      Peaceful: "🕊️",
+      Motivated: "⚡",
+      Calm: "🌿",
+      Overwhelmed: "🌧️",
+      Anxious: "💭",
+      Tired: "🌙",
+    };
+
+    return moodEmojis[mood] || "💙";
+  };
+
+  const getWellnessTip = () => {
+    const tips = [
+      "Pause for one minute today and notice your breathing without judging it.",
+      "Write down one thing that felt heavy and one thing that felt peaceful today.",
+      "Take a short break from screens and let your mind reset.",
+      "Drink water, stretch gently, and give your body a small moment of care.",
+      "Talk to yourself the way you would comfort a close friend.",
+      "Choose one small task today instead of trying to fix everything at once.",
+      "Before sleeping, name one thing you handled better than before.",
+    ];
+
+    const dayIndex = new Date().getDay();
+
+    return tips[dayIndex];
+  };
+
+  const getWellnessStreak = () => {
+    if (moodHistory.length === 0) {
+      return 0;
+    }
+
+    const uniqueDates = [
+      ...new Set(
+        moodHistory.map((item) =>
+          new Date(item.createdAt).toDateString()
+        )
+      ),
+    ];
+
+    let streak = 0;
+
+    const today = new Date();
+
+    for (let i = 0; i < 30; i++) {
+      const checkDate = new Date(today);
+
+      checkDate.setDate(today.getDate() - i);
+
+      const hasEntry = uniqueDates.includes(
+        checkDate.toDateString()
+      );
+
+      if (hasEntry) {
+        streak += 1;
+      } else if (i === 0) {
+        continue;
+      } else {
+        break;
+      }
+    }
+
+    return streak;
+  };
+
+  const getSuggestedNextStep = () => {
+    if (moodHistory.length === 0 && results.length === 0) {
+      return "Start with one emotional check-in today. It will help MindMirror understand your reflection pattern better.";
+    }
+
+    if (moodHistory.length > 0 && results.length === 0) {
+      return "You have started tracking your mood. Try completing one assessment next to get a deeper reflection.";
+    }
+
+    if (results.length > 0 && moodHistory.length === 0) {
+      return "You have completed an assessment. Add a mood check-in today to track your emotional pattern over time.";
+    }
+
+    return "You are building a good reflection habit. Continue with regular mood check-ins and assessments.";
+  };
+
   const moodSummary = getMoodSummary();
+
+  const wellnessStreak = getWellnessStreak();
+
+  const progressItems = [
+    {
+      label: "Assessments Completed",
+      value: results.length,
+      icon: <FaBrain />,
+    },
+    {
+      label: "Mood Check-Ins",
+      value: moodHistory.length,
+      icon: <FaHeart />,
+    },
+    {
+      label: "Quiz Contributions",
+      value: myContributions.length,
+      icon: <FaBookOpen />,
+    },
+  ];
 
   const sections = [
     {
@@ -289,8 +371,7 @@ function Dashboard() {
     <div
       className="min-h-screen text-white relative overflow-hidden"
       style={{
-        fontFamily:
-          "Poppins, sans-serif",
+        fontFamily: "Poppins, sans-serif",
 
         background:
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
@@ -328,13 +409,81 @@ function Dashboard() {
           </h1>
 
           <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-8 md:leading-9 max-w-4xl">
-            Your personal emotional wellness
-            space will evolve naturally as
-            you explore assessments,
-            reflections, and psychology
-            insights over time.
+            Your personal emotional wellness space will evolve
+            naturally as you explore assessments, reflections,
+            and psychology insights over time.
           </p>
         </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6 mb-14 md:mb-16">
+          {progressItems.map((item, index) => (
+            <motion.div
+              key={index}
+              whileHover={{
+                y: -5,
+              }}
+              className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 md:p-7 shadow-2xl"
+            >
+              <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
+                {item.icon}
+              </div>
+
+              <h2 className="text-3xl font-bold text-cyan-300 mb-2">
+                {item.value}
+              </h2>
+
+              <p className="text-slate-300 text-base leading-7">
+                {item.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-14 md:mb-16">
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8 shadow-2xl">
+            <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
+              <FaHeart />
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Today’s Wellness Tip
+            </h2>
+
+            <p className="text-slate-300 text-base md:text-lg leading-8">
+              {getWellnessTip()}
+            </p>
+          </div>
+
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8 shadow-2xl">
+            <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
+              <FaChartLine />
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Wellness Streak
+            </h2>
+
+            <p className="text-cyan-300 text-4xl font-bold mb-3">
+              {wellnessStreak}{" "}
+              {wellnessStreak === 1 ? "day" : "days"}
+            </p>
+
+            <p className="text-slate-300 text-base md:text-lg leading-8">
+              Keep checking in regularly to build your emotional
+              reflection habit.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-[32px] p-6 md:p-8 mb-14 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Suggested Next Step
+          </h2>
+
+          <p className="text-slate-300 text-base md:text-lg leading-8">
+            {getSuggestedNextStep()}
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-5 md:gap-6 mb-14 md:mb-16">
           {sections.map((section, index) => (
@@ -367,9 +516,8 @@ function Dashboard() {
             </h2>
 
             <p className="text-slate-300 text-base md:text-lg leading-8 mb-7">
-              Choose how you feel, rate the
-              intensity, and optionally leave
-              a small reflection for yourself.
+              Choose how you feel, rate the intensity, and
+              optionally leave a small reflection for yourself.
             </p>
 
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-7">
@@ -392,6 +540,9 @@ function Dashboard() {
                       : "bg-white/5 border-white/10 hover:bg-cyan-500/10"
                   }`}
                 >
+                  <span className="mr-2">
+                    {getMoodEmoji(mood)}
+                  </span>
                   {mood}
                 </motion.button>
               ))}
@@ -422,9 +573,7 @@ function Dashboard() {
 
             <textarea
               value={note}
-              onChange={(e) =>
-                setNote(e.target.value)
-              }
+              onChange={(e) => setNote(e.target.value)}
               placeholder="Optional reflection note..."
               className="w-full min-h-[110px] bg-white/5 border border-white/10 rounded-2xl p-5 text-base text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 transition mb-6"
             ></textarea>
@@ -500,6 +649,9 @@ function Dashboard() {
                     </h3>
 
                     <p className="text-cyan-300 text-3xl font-bold break-words">
+                      {getMoodEmoji(
+                        moodSummary.mostFrequentMood
+                      )}{" "}
                       {moodSummary.mostFrequentMood}
                     </p>
                   </motion.div>
@@ -546,9 +698,8 @@ function Dashboard() {
           {myContributions.length === 0 ? (
             <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
               <p className="text-slate-300 text-base md:text-lg leading-8">
-                Quizzes you contribute to
-                MindMirror will appear here
-                with their review status.
+                Quizzes you contribute to MindMirror will appear
+                here with their review status.
               </p>
             </div>
           ) : (
@@ -571,14 +722,12 @@ function Dashboard() {
                         quiz.status
                       )}`}
                     >
-                      {quiz.status ||
-                        "under review"}
+                      {quiz.status || "under review"}
                     </span>
                   </div>
 
                   <p className="text-cyan-300 uppercase tracking-[0.22em] text-xs mb-3">
-                    {quiz.category ||
-                      "Self Awareness"}
+                    {quiz.category || "Self Awareness"}
                   </p>
 
                   <h3 className="text-2xl font-bold mb-3">
@@ -621,10 +770,9 @@ function Dashboard() {
           {myBlogContributions.length === 0 ? (
             <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
               <p className="text-slate-300 text-base md:text-lg leading-8">
-                Blog resources you contribute
-                to MindMirror will appear here
-                after the blog contribution API
-                is added to the backend.
+                Blog resources you contribute to MindMirror will
+                appear here after the blog contribution API is
+                added to the backend.
               </p>
             </div>
           ) : (
@@ -647,14 +795,12 @@ function Dashboard() {
                         blog.status
                       )}`}
                     >
-                      {blog.status ||
-                        "under review"}
+                      {blog.status || "under review"}
                     </span>
                   </div>
 
                   <p className="text-cyan-300 uppercase tracking-[0.22em] text-xs mb-3">
-                    {blog.category ||
-                      "Psychology"}
+                    {blog.category || "Psychology"}
                   </p>
 
                   <h3 className="text-2xl font-bold mb-3">
@@ -711,51 +857,46 @@ function Dashboard() {
           {moodHistory.length === 0 ? (
             <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
               <p className="text-slate-300 text-base md:text-lg leading-8">
-                Your mood check-ins will
-                appear here once you begin
-                saving daily emotional
-                reflections.
+                Your mood check-ins will appear here once you
+                begin saving daily emotional reflections.
               </p>
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
-              {moodHistory
-                .slice(0, 6)
-                .map((item) => (
-                  <motion.div
-                    key={item._id}
-                    whileHover={{
-                      y: -5,
-                    }}
-                    className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 shadow-2xl"
-                  >
-                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
-                      <FaHeart />
-                    </div>
+              {moodHistory.slice(0, 6).map((item) => (
+                <motion.div
+                  key={item._id}
+                  whileHover={{
+                    y: -5,
+                  }}
+                  className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 shadow-2xl"
+                >
+                  <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
+                    {getMoodEmoji(item.mood)}
+                  </div>
 
-                    <h3 className="text-2xl font-bold mb-3">
-                      {item.mood}
-                    </h3>
+                  <h3 className="text-2xl font-bold mb-3">
+                    {item.mood}
+                  </h3>
 
-                    <p className="text-slate-300 mb-3">
-                      Intensity:{" "}
-                      {item.intensity}/10
+                  <p className="text-slate-300 mb-3">
+                    Intensity: {item.intensity}/10
+                  </p>
+
+                  {item.note && (
+                    <p className="text-slate-300 leading-7 mb-4">
+                      “{item.note}”
                     </p>
+                  )}
 
-                    {item.note && (
-                      <p className="text-slate-300 leading-7 mb-4">
-                        “{item.note}”
-                      </p>
-                    )}
-
-                    <p className="text-slate-400 text-sm">
-                      Saved on{" "}
-                      {new Date(
-                        item.createdAt
-                      ).toLocaleDateString()}
-                    </p>
-                  </motion.div>
-                ))}
+                  <p className="text-slate-400 text-sm">
+                    Saved on{" "}
+                    {new Date(
+                      item.createdAt
+                    ).toLocaleDateString()}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           )}
         </div>
@@ -768,10 +909,9 @@ function Dashboard() {
           {results.length === 0 ? (
             <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] p-6 md:p-8">
               <p className="text-slate-300 text-base md:text-lg leading-8">
-                Your reflections will begin
-                appearing here as you complete
-                emotional assessments and
-                explore MindMirror.
+                Your reflections will begin appearing here as you
+                complete emotional assessments and explore
+                MindMirror.
               </p>
             </div>
           ) : (
@@ -805,8 +945,8 @@ function Dashboard() {
 
                   <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                     <p className="text-slate-300 leading-7">
-                      Emotional reflection
-                      score: {result.score}
+                      Emotional reflection score:{" "}
+                      {result.score}
                     </p>
                   </div>
                 </motion.div>
