@@ -555,7 +555,7 @@ function QuizDetails() {
 
   if (!quiz) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center text-3xl">
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center text-xl sm:text-2xl">
         Loading Assessment...
       </div>
     );
@@ -581,11 +581,11 @@ function QuizDetails() {
             "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
         }}
       >
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
+        <div className="absolute top-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+        <div className="absolute bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-8 py-32">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-8 pt-28 sm:pt-32 pb-20">
           <motion.div
             initial={{
               opacity: 0,
@@ -595,31 +595,31 @@ function QuizDetails() {
               opacity: 1,
               y: 0,
             }}
-            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[40px] p-12 shadow-2xl"
+            className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] sm:rounded-[40px] p-6 sm:p-10 shadow-2xl"
           >
-            <div className="bg-cyan-500/20 w-24 h-24 rounded-3xl flex items-center justify-center text-5xl text-cyan-300 mb-10">
+            <div className="bg-cyan-500/20 w-16 sm:w-20 h-16 sm:h-20 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl text-cyan-300 mb-8">
               <FaBrain />
             </div>
 
-            <p className="uppercase tracking-[0.3em] text-cyan-300 text-sm mb-6">
+            <p className="uppercase tracking-[0.22em] text-cyan-300 text-xs sm:text-sm mb-5">
               Emotional Evaluation
             </p>
 
-            <h1 className="text-6xl font-bold mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-bold mb-6 leading-tight">
               {evaluation.title}
             </h1>
 
-            <p className="text-slate-300 text-2xl leading-[2] mb-8">
+            <p className="text-slate-300 text-base sm:text-xl leading-8 sm:leading-9 mb-8">
               {evaluation.message}
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-10">
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-                <h2 className="text-2xl font-bold mb-4">
+            <div className="grid sm:grid-cols-2 gap-5 mb-8">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                <h2 className="text-xl font-bold mb-3">
                   Your Score
                 </h2>
 
-                <p className="text-cyan-300 text-4xl font-bold">
+                <p className="text-cyan-300 text-3xl font-bold">
                   {score} /{" "}
                   {
                     scoreDetails.maxPossibleScore
@@ -627,46 +627,46 @@ function QuizDetails() {
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-                <h2 className="text-2xl font-bold mb-4">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                <h2 className="text-xl font-bold mb-3">
                   Assessment Type
                 </h2>
 
-                <p className="text-cyan-300 text-2xl font-semibold capitalize">
+                <p className="text-cyan-300 text-xl font-semibold capitalize">
                   {quiz.category ||
                     "Self Awareness"}
                 </p>
               </div>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10">
-              <h2 className="text-3xl font-bold mb-5">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8">
+              <h2 className="text-2xl font-bold mb-4">
                 Suggested Reflection
               </h2>
 
-              <p className="text-slate-300 text-xl leading-9">
+              <p className="text-slate-300 text-base sm:text-lg leading-8">
                 {evaluation.suggestion}
               </p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10">
-              <h2 className="text-3xl font-bold mb-6">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8">
+              <h2 className="text-2xl font-bold mb-5">
                 Reflection Summary
               </h2>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {savedAnswers.map(
                   (item, index) => (
                     <div
                       key={index}
-                      className="border-b border-white/10 pb-5"
+                      className="border-b border-white/10 pb-4"
                     >
-                      <p className="text-white text-lg mb-2">
+                      <p className="text-white text-base mb-2">
                         {index + 1}.{" "}
                         {item.question}
                       </p>
 
-                      <p className="text-cyan-300">
+                      <p className="text-cyan-300 text-sm sm:text-base">
                         {item.answer}
                       </p>
                     </div>
@@ -675,12 +675,12 @@ function QuizDetails() {
               </div>
             </div>
 
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold mb-8">
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold mb-6">
                 Recommended Insights
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-5">
                 {evaluation.articles.map(
                   (
                     article,
@@ -694,16 +694,16 @@ function QuizDetails() {
                         whileHover={{
                           scale: 1.03,
                         }}
-                        className="bg-white/5 border border-white/10 rounded-3xl p-8"
+                        className="bg-white/5 border border-white/10 rounded-3xl p-6"
                       >
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-2xl font-semibold leading-tight">
+                        <div className="flex items-center justify-between gap-4">
+                          <h3 className="text-lg sm:text-xl font-semibold leading-tight">
                             {
                               article.title
                             }
                           </h3>
 
-                          <FaArrowRight className="text-cyan-300 text-xl" />
+                          <FaArrowRight className="text-cyan-300 text-lg shrink-0" />
                         </div>
                       </motion.div>
                     </Link>
@@ -713,20 +713,20 @@ function QuizDetails() {
             </div>
 
             {quiz.reference?.title && (
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8">
                 <div className="flex items-center gap-4 mb-5">
-                  <FaBookOpen className="text-cyan-300 text-2xl" />
+                  <FaBookOpen className="text-cyan-300 text-xl" />
 
-                  <h2 className="text-3xl font-bold">
+                  <h2 className="text-2xl font-bold">
                     Assessment Reference
                   </h2>
                 </div>
 
-                <p className="text-cyan-300 text-xl font-semibold mb-3">
+                <p className="text-cyan-300 text-lg font-semibold mb-3">
                   {quiz.reference.title}
                 </p>
 
-                <p className="text-slate-300 text-lg mb-5">
+                <p className="text-slate-300 text-base mb-5">
                   {quiz.reference.source}
                 </p>
 
@@ -735,7 +735,7 @@ function QuizDetails() {
                     href={quiz.reference.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-cyan-300 underline break-all"
+                    className="text-cyan-300 underline break-all text-sm sm:text-base"
                   >
                     View original reference
                   </a>
@@ -743,8 +743,8 @@ function QuizDetails() {
               </div>
             )}
 
-            <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-8">
-              <p className="text-slate-300 text-lg leading-9">
+            <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-6">
+              <p className="text-slate-300 text-sm sm:text-base leading-8">
                 MindMirror assessments are
                 designed for emotional
                 reflection and educational
@@ -761,7 +761,7 @@ function QuizDetails() {
 
   return (
     <div
-      className="min-h-screen text-white flex items-center justify-center p-6 relative overflow-hidden"
+      className="min-h-screen text-white flex items-center justify-center px-4 sm:px-6 pt-24 pb-8 relative overflow-hidden"
       style={{
         fontFamily:
           "Poppins, sans-serif",
@@ -770,35 +770,35 @@ function QuizDetails() {
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
     >
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-500/20 blur-3xl rounded-full"></div>
 
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
       <motion.div
         initial={{
           opacity: 0,
-          y: 40,
+          y: 30,
         }}
         animate={{
           opacity: 1,
           y: 0,
         }}
-        className="relative z-10 bg-white/10 border border-white/10 backdrop-blur-xl p-12 rounded-[40px] w-full max-w-3xl shadow-2xl"
+        className="relative z-10 bg-white/10 border border-white/10 backdrop-blur-xl p-5 sm:p-7 md:p-8 rounded-[28px] sm:rounded-[36px] w-full max-w-2xl shadow-2xl"
       >
-        <div className="mb-10">
-          <p className="text-cyan-300 tracking-[0.3em] uppercase text-sm mb-5">
+        <div className="mb-5 sm:mb-6">
+          <p className="text-cyan-300 tracking-[0.18em] uppercase text-[11px] sm:text-xs mb-3">
             Emotional Pattern Analysis
           </p>
 
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 leading-tight">
             {quiz.title}
           </h1>
 
-          <p className="text-slate-300 text-lg mb-6">
+          <p className="text-slate-300 text-sm sm:text-base leading-7 mb-4">
             {quiz.description}
           </p>
 
-          <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full transition-all duration-500"
               style={{
@@ -813,7 +813,7 @@ function QuizDetails() {
             ></div>
           </div>
 
-          <p className="mt-4 text-slate-300">
+          <p className="mt-3 text-slate-300 text-sm">
             Question{" "}
             {currentQuestion + 1} of{" "}
             {
@@ -832,17 +832,17 @@ function QuizDetails() {
             opacity: 1,
             y: 0,
           }}
-          className="text-3xl font-semibold mb-10 leading-relaxed"
+          className="text-lg sm:text-xl md:text-2xl font-semibold mb-5 sm:mb-6 leading-8"
         >
           {question.question}
         </motion.h2>
 
-        <div className="grid gap-5">
+        <div className="grid gap-3 sm:gap-4">
           {question.options.map(
             (option) => (
               <motion.button
                 whileHover={{
-                  scale: 1.02,
+                  scale: 1.01,
                 }}
                 whileTap={{
                   scale: 0.98,
@@ -853,14 +853,14 @@ function QuizDetails() {
                     option._id
                   )
                 }
-                className={`p-6 rounded-3xl text-left transition duration-300 border ${
+                className={`p-4 sm:p-5 rounded-2xl text-left transition duration-300 border ${
                   selectedAnswer ===
                   option._id
                     ? "bg-cyan-500/20 border-cyan-400"
                     : "bg-white/5 border-white/10 hover:bg-cyan-500/10"
                 }`}
               >
-                <span className="text-xl">
+                <span className="text-sm sm:text-base md:text-lg leading-7">
                   {option.text}
                 </span>
               </motion.button>
@@ -870,7 +870,7 @@ function QuizDetails() {
 
         <motion.button
           whileHover={{
-            scale: 1.02,
+            scale: 1.01,
           }}
           whileTap={{
             scale: 0.98,
@@ -878,7 +878,7 @@ function QuizDetails() {
           onClick={
             handleNextQuestion
           }
-          className="mt-10 w-full bg-gradient-to-r from-cyan-500 to-blue-600 transition p-6 rounded-3xl text-xl font-semibold shadow-2xl shadow-blue-500/20"
+          className="mt-6 sm:mt-7 w-full bg-gradient-to-r from-cyan-500 to-blue-600 transition p-4 sm:p-5 rounded-2xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20"
         >
           {currentQuestion + 1 ===
           quiz.questions.length
