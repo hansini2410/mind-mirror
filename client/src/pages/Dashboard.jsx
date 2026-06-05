@@ -157,7 +157,7 @@ function Dashboard() {
       ]);
 
       setMoodMessage(
-        "Your emotional check-in has been saved."
+        "Your emotional check-in has been saved. A helpful suggestion has been added with your check-in."
       );
 
       setNote("");
@@ -234,6 +234,105 @@ function Dashboard() {
     };
   };
 
+  const getCheckInSupport = (
+    mood = selectedMood,
+    moodIntensity = intensity
+  ) => {
+    const level = Number(moodIntensity || 0);
+
+    if (!mood) {
+      return null;
+    }
+
+    if (mood === "Anxious") {
+      return {
+        title: "Anxiety Support Exercise",
+        meaning:
+          "An anxious mood may mean your mind is trying to prepare for something uncertain or stressful.",
+        exercise:
+          "Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 slow breath.",
+        nextSteps:
+          level >= 7
+            ? "Your intensity is high, so pause before doing anything big. Sit down, breathe slowly, and speak to someone you trust if the feeling continues."
+            : "Write down the thought that is worrying you and one small action you can take.",
+      };
+    }
+
+    if (mood === "Overwhelmed") {
+      return {
+        title: "Overload Relief Exercise",
+        meaning:
+          "Feeling overwhelmed may mean too many thoughts, tasks, or emotions are happening at the same time.",
+        exercise:
+          "Do a brain dump. Write every task or thought on paper, then circle only one thing that needs attention first.",
+        nextSteps:
+          level >= 7
+            ? "Do not try to solve everything at once. Choose only one small task and leave the rest for later."
+            : "Take a 5-minute break, drink water, and return to one task slowly.",
+      };
+    }
+
+    if (mood === "Tired") {
+      return {
+        title: "Rest and Recovery Exercise",
+        meaning:
+          "Tiredness may be physical, emotional, or mental. It can be a sign that your body needs recovery.",
+        exercise:
+          "Try a 10-minute reset: close your eyes, relax your shoulders, breathe slowly, and avoid scrolling during the break.",
+        nextSteps:
+          level >= 7
+            ? "Reduce one unnecessary task today and try to sleep earlier if possible."
+            : "Drink water, stretch gently, and take a short screen break.",
+      };
+    }
+
+    if (mood === "Calm") {
+      return {
+        title: "Calmness Reflection",
+        meaning:
+          "A calm mood shows emotional balance. This is a good time to notice what helped you feel steady.",
+        exercise:
+          "Write one sentence about what helped you feel calm today.",
+        nextSteps:
+          "Try to repeat one habit that supported this calm feeling, such as rest, music, prayer, silence, walking, or talking to someone kind.",
+      };
+    }
+
+    if (mood === "Peaceful") {
+      return {
+        title: "Peace Maintenance Exercise",
+        meaning:
+          "A peaceful mood shows that your mind may be feeling safe, settled, or relaxed.",
+        exercise:
+          "Take one quiet minute and notice your breathing. Let yourself enjoy the peaceful moment without rushing.",
+        nextSteps:
+          "Save what helped you feel peaceful today so you can repeat it on difficult days.",
+      };
+    }
+
+    if (mood === "Motivated") {
+      return {
+        title: "Motivation Direction Exercise",
+        meaning:
+          "Motivation can be useful when it is directed clearly instead of being spent on too many things.",
+        exercise:
+          "Choose one useful task and set a 20-minute focus timer.",
+        nextSteps:
+          "Use your motivation for one meaningful action instead of trying to finish everything at once.",
+      };
+    }
+
+    return {
+      title: "General Wellness Support",
+      meaning:
+        "Your check-in helps you understand your emotional state better.",
+      exercise:
+        "Pause for one minute and name what you are feeling without judging it.",
+      nextSteps:
+        "Continue tracking your mood so MindMirror can show clearer emotional patterns over time.",
+    };
+  };
+
   const getPersonalWellnessPlan = () => {
     if (moodHistory.length === 0) {
       return {
@@ -242,7 +341,7 @@ function Dashboard() {
           "Begin by saving one mood check-in today. Once you add a few check-ins, MindMirror will show more personal emotional guidance.",
         actions: [
           "Save your current mood once today.",
-          "Write one short sentence about why you feel that way.",
+          "Use the suggested exercise shown after selecting your mood.",
           "Complete one assessment to understand your emotional pattern better.",
         ],
       };
@@ -319,6 +418,9 @@ function Dashboard() {
   const wellnessPlan =
     getPersonalWellnessPlan();
 
+  const currentCheckInSupport =
+    getCheckInSupport();
+
   const sections = [
     {
       title: "Reflection History",
@@ -342,7 +444,7 @@ function Dashboard() {
       title: "Mood Check-Ins",
 
       description:
-        "Your emotional check-ins and wellness patterns will gradually build over time.",
+        "Your emotional check-ins now include helpful suggestions and small exercises based on how you feel.",
 
       icon: <FaHeart />,
     },
@@ -439,9 +541,10 @@ function Dashboard() {
             </h2>
 
             <p className="text-slate-300 text-base md:text-lg leading-8 mb-7">
-              Choose how you feel, rate the
-              intensity, and optionally leave
-              a small reflection for yourself.
+              Choose how you feel and rate the
+              intensity. MindMirror will suggest
+              a small exercise based on your
+              check-in.
             </p>
 
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-7">
@@ -492,12 +595,54 @@ function Dashboard() {
               />
             </div>
 
+            {currentCheckInSupport && (
+              <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-3xl p-5 md:p-6 mb-6">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="bg-cyan-500/20 w-12 h-12 rounded-2xl flex items-center justify-center text-xl text-cyan-300 shrink-0">
+                    <FaCheckCircle />
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">
+                      {currentCheckInSupport.title}
+                    </h3>
+
+                    <p className="text-slate-300 leading-7">
+                      {currentCheckInSupport.meaning}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                    <h4 className="text-cyan-300 font-semibold mb-2">
+                      Suggested Exercise
+                    </h4>
+
+                    <p className="text-slate-300 leading-7">
+                      {currentCheckInSupport.exercise}
+                    </p>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                    <h4 className="text-cyan-300 font-semibold mb-2">
+                      Small Next Step
+                    </h4>
+
+                    <p className="text-slate-300 leading-7">
+                      {currentCheckInSupport.nextSteps}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <textarea
               value={note}
               onChange={(e) =>
                 setNote(e.target.value)
               }
-              placeholder="Optional reflection note..."
+              placeholder="Optional note: What made you feel this way?"
               className="w-full min-h-[110px] bg-white/5 border border-white/10 rounded-2xl p-5 text-base text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 transition mb-6"
             ></textarea>
 
@@ -514,7 +659,7 @@ function Dashboard() {
             >
               {moodLoading
                 ? "Saving Emotional Check-In..."
-                : "Save Emotional Check-In"}
+                : "Save Check-In and Suggestion"}
             </motion.button>
 
             {moodMessage && (
@@ -832,41 +977,61 @@ function Dashboard() {
             <div className="grid md:grid-cols-3 gap-6">
               {moodHistory
                 .slice(0, 6)
-                .map((item) => (
-                  <motion.div
-                    key={item._id}
-                    whileHover={{
-                      y: -5,
-                    }}
-                    className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 shadow-2xl"
-                  >
-                    <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
-                      <FaHeart />
-                    </div>
+                .map((item) => {
+                  const savedSupport =
+                    getCheckInSupport(
+                      item.mood,
+                      item.intensity
+                    );
 
-                    <h3 className="text-2xl font-bold mb-3">
-                      {item.mood}
-                    </h3>
+                  return (
+                    <motion.div
+                      key={item._id}
+                      whileHover={{
+                        y: -5,
+                      }}
+                      className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[28px] p-6 shadow-2xl"
+                    >
+                      <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-cyan-300 mb-5">
+                        <FaHeart />
+                      </div>
 
-                    <p className="text-slate-300 mb-3">
-                      Intensity:{" "}
-                      {item.intensity}/10
-                    </p>
+                      <h3 className="text-2xl font-bold mb-3">
+                        {item.mood}
+                      </h3>
 
-                    {item.note && (
-                      <p className="text-slate-300 leading-7 mb-4">
-                        “{item.note}”
+                      <p className="text-slate-300 mb-3">
+                        Intensity:{" "}
+                        {item.intensity}/10
                       </p>
-                    )}
 
-                    <p className="text-slate-400 text-sm">
-                      Saved on{" "}
-                      {new Date(
-                        item.createdAt
-                      ).toLocaleDateString()}
-                    </p>
-                  </motion.div>
-                ))}
+                      {savedSupport && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4">
+                          <p className="text-cyan-300 font-semibold mb-2">
+                            Suggested Exercise
+                          </p>
+
+                          <p className="text-slate-300 text-sm leading-7">
+                            {savedSupport.exercise}
+                          </p>
+                        </div>
+                      )}
+
+                      {item.note && (
+                        <p className="text-slate-300 leading-7 mb-4">
+                          “{item.note}”
+                        </p>
+                      )}
+
+                      <p className="text-slate-400 text-sm">
+                        Saved on{" "}
+                        {new Date(
+                          item.createdAt
+                        ).toLocaleDateString()}
+                      </p>
+                    </motion.div>
+                  );
+                })}
             </div>
           )}
         </div>
