@@ -334,6 +334,109 @@ function Dashboard() {
   };
 
   const getPersonalWellnessPlan = () => {
+    if (selectedMood) {
+      const level = Number(intensity || 0);
+
+      if (selectedMood === "Anxious") {
+        return {
+          title:
+            level >= 7
+              ? "High Anxiety Care Plan"
+              : "Anxiety Support Plan",
+          description:
+            "This plan is based on your current anxious check-in. It focuses on grounding your mind and reducing worry.",
+          actions: [
+            "Try the 5-4-3-2-1 grounding exercise.",
+            "Write down the thought that is making you anxious.",
+            "Take three slow breaths before starting your next task.",
+            level >= 7
+              ? "If the feeling continues strongly, talk to someone you trust."
+              : "Choose one small action that is in your control.",
+          ],
+        };
+      }
+
+      if (selectedMood === "Overwhelmed") {
+        return {
+          title:
+            level >= 7
+              ? "Overload Recovery Plan"
+              : "Overwhelm Relief Plan",
+          description:
+            "This plan is based on your current overwhelmed check-in. It helps you reduce mental load and focus on one thing at a time.",
+          actions: [
+            "Write down everything that is on your mind.",
+            "Pick only one task that needs attention first.",
+            "Take a 5-minute break before continuing.",
+            level >= 7
+              ? "Avoid making big decisions until you feel calmer."
+              : "Break your next task into one small step.",
+          ],
+        };
+      }
+
+      if (selectedMood === "Tired") {
+        return {
+          title:
+            level >= 7
+              ? "Deep Rest Plan"
+              : "Energy Recovery Plan",
+          description:
+            "This plan is based on your current tired check-in. It focuses on rest, energy, and reducing pressure.",
+          actions: [
+            "Drink water and take a short stretch break.",
+            "Close your eyes for two minutes without using your phone.",
+            "Reduce one unnecessary task today.",
+            level >= 7
+              ? "Try to sleep earlier or take proper rest if possible."
+              : "Do one light activity that does not drain you.",
+          ],
+        };
+      }
+
+      if (selectedMood === "Calm") {
+        return {
+          title: "Calm Maintenance Plan",
+          description:
+            "This plan is based on your current calm check-in. It helps you notice what is working well and maintain emotional balance.",
+          actions: [
+            "Write one reason why you feel calm today.",
+            "Repeat one habit that helped you feel stable.",
+            "Use this calm state to complete one meaningful task.",
+            "Save this check-in so you can understand your calm patterns later.",
+          ],
+        };
+      }
+
+      if (selectedMood === "Peaceful") {
+        return {
+          title: "Peace Preservation Plan",
+          description:
+            "This plan is based on your current peaceful check-in. It helps you protect and understand peaceful moments.",
+          actions: [
+            "Pause for one minute and enjoy the peaceful feeling.",
+            "Notice what helped you feel peaceful today.",
+            "Avoid rushing into stressful tasks immediately.",
+            "Write one thing you want to repeat tomorrow.",
+          ],
+        };
+      }
+
+      if (selectedMood === "Motivated") {
+        return {
+          title: "Focused Motivation Plan",
+          description:
+            "This plan is based on your current motivated check-in. It helps you use your energy in a clear and useful way.",
+          actions: [
+            "Choose one important task to complete first.",
+            "Set a 20-minute focus timer.",
+            "Avoid starting too many things at once.",
+            "Use your motivation for progress, not pressure.",
+          ],
+        };
+      }
+    }
+
     if (moodHistory.length === 0) {
       return {
         title: "Start Your Wellness Pattern",
