@@ -157,14 +157,10 @@ function Dashboard() {
       ]);
 
       setMoodMessage(
-        "Your emotional check-in has been saved. A helpful suggestion has been added with your check-in."
+        "Your emotional check-in has been saved. Your wellness plan is now based on this latest check-in."
       );
 
       setNote("");
-
-      setIntensity(5);
-
-      setSelectedMood("");
     } catch (error) {
       console.log(error);
 
@@ -334,172 +330,122 @@ function Dashboard() {
   };
 
   const getPersonalWellnessPlan = () => {
-    if (selectedMood) {
-      const level = Number(intensity || 0);
+    const activeMood =
+      selectedMood || moodHistory[0]?.mood || "";
 
-      if (selectedMood === "Anxious") {
-        return {
-          title:
-            level >= 7
-              ? "High Anxiety Care Plan"
-              : "Anxiety Support Plan",
-          description:
-            "This plan is based on your current anxious check-in. It focuses on grounding your mind and reducing worry.",
-          actions: [
-            "Try the 5-4-3-2-1 grounding exercise.",
-            "Write down the thought that is making you anxious.",
-            "Take three slow breaths before starting your next task.",
-            level >= 7
-              ? "If the feeling continues strongly, talk to someone you trust."
-              : "Choose one small action that is in your control.",
-          ],
-        };
-      }
+    const activeIntensity =
+      selectedMood
+        ? Number(intensity || 0)
+        : Number(moodHistory[0]?.intensity || 0);
 
-      if (selectedMood === "Overwhelmed") {
-        return {
-          title:
-            level >= 7
-              ? "Overload Recovery Plan"
-              : "Overwhelm Relief Plan",
-          description:
-            "This plan is based on your current overwhelmed check-in. It helps you reduce mental load and focus on one thing at a time.",
-          actions: [
-            "Write down everything that is on your mind.",
-            "Pick only one task that needs attention first.",
-            "Take a 5-minute break before continuing.",
-            level >= 7
-              ? "Avoid making big decisions until you feel calmer."
-              : "Break your next task into one small step.",
-          ],
-        };
-      }
-
-      if (selectedMood === "Tired") {
-        return {
-          title:
-            level >= 7
-              ? "Deep Rest Plan"
-              : "Energy Recovery Plan",
-          description:
-            "This plan is based on your current tired check-in. It focuses on rest, energy, and reducing pressure.",
-          actions: [
-            "Drink water and take a short stretch break.",
-            "Close your eyes for two minutes without using your phone.",
-            "Reduce one unnecessary task today.",
-            level >= 7
-              ? "Try to sleep earlier or take proper rest if possible."
-              : "Do one light activity that does not drain you.",
-          ],
-        };
-      }
-
-      if (selectedMood === "Calm") {
-        return {
-          title: "Calm Maintenance Plan",
-          description:
-            "This plan is based on your current calm check-in. It helps you notice what is working well and maintain emotional balance.",
-          actions: [
-            "Write one reason why you feel calm today.",
-            "Repeat one habit that helped you feel stable.",
-            "Use this calm state to complete one meaningful task.",
-            "Save this check-in so you can understand your calm patterns later.",
-          ],
-        };
-      }
-
-      if (selectedMood === "Peaceful") {
-        return {
-          title: "Peace Preservation Plan",
-          description:
-            "This plan is based on your current peaceful check-in. It helps you protect and understand peaceful moments.",
-          actions: [
-            "Pause for one minute and enjoy the peaceful feeling.",
-            "Notice what helped you feel peaceful today.",
-            "Avoid rushing into stressful tasks immediately.",
-            "Write one thing you want to repeat tomorrow.",
-          ],
-        };
-      }
-
-      if (selectedMood === "Motivated") {
-        return {
-          title: "Focused Motivation Plan",
-          description:
-            "This plan is based on your current motivated check-in. It helps you use your energy in a clear and useful way.",
-          actions: [
-            "Choose one important task to complete first.",
-            "Set a 20-minute focus timer.",
-            "Avoid starting too many things at once.",
-            "Use your motivation for progress, not pressure.",
-          ],
-        };
-      }
-    }
-
-    if (moodHistory.length === 0) {
+    if (activeMood === "Anxious") {
       return {
-        title: "Start Your Wellness Pattern",
+        title:
+          activeIntensity >= 7
+            ? "High Anxiety Care Plan"
+            : "Anxiety Support Plan",
         description:
-          "Begin by saving one mood check-in today. Once you add a few check-ins, MindMirror will show more personal emotional guidance.",
+          "This plan is based on your latest anxious check-in. It focuses on calming the body, grounding the mind, and reducing worry.",
         actions: [
-          "Save your current mood once today.",
-          "Use the suggested exercise shown after selecting your mood.",
-          "Complete one assessment to understand your emotional pattern better.",
+          "Try the 5-4-3-2-1 grounding exercise.",
+          "Write down the thought that is making you anxious.",
+          "Take three slow breaths before starting your next task.",
+          activeIntensity >= 7
+            ? "If the feeling continues strongly, talk to someone you trust."
+            : "Choose one small action that is in your control.",
         ],
       };
     }
 
-    const averageIntensity =
-      Number(getMoodSummary().averageIntensity);
-
-    const mostFrequentMood =
-      getMoodSummary().mostFrequentMood;
-
-    if (
-      mostFrequentMood === "Anxious" ||
-      mostFrequentMood === "Overwhelmed" ||
-      averageIntensity >= 7
-    ) {
+    if (activeMood === "Overwhelmed") {
       return {
-        title: "Gentle Recovery Plan",
+        title:
+          activeIntensity >= 7
+            ? "Overload Recovery Plan"
+            : "Overwhelm Relief Plan",
         description:
-          "Your recent check-ins suggest that your emotional intensity may be high. This plan focuses on slowing down, reducing pressure, and creating mental space.",
+          "This plan is based on your latest overwhelmed check-in. It helps you reduce mental load and focus on one small step.",
         actions: [
-          "Take a short break from screens for 10 minutes.",
-          "Write down the main thought that is bothering you.",
-          "Try one simple breathing or grounding exercise.",
-          "Avoid overloading your day with too many tasks.",
+          "Write down everything that is on your mind.",
+          "Pick only one task that needs attention first.",
+          "Take a 5-minute break before continuing.",
+          activeIntensity >= 7
+            ? "Avoid making big decisions until you feel calmer."
+            : "Break your next task into one small step.",
         ],
       };
     }
 
-    if (
-      mostFrequentMood === "Tired" ||
-      averageIntensity >= 4
-    ) {
+    if (activeMood === "Tired") {
       return {
-        title: "Balance and Energy Plan",
+        title:
+          activeIntensity >= 7
+            ? "Deep Rest Plan"
+            : "Energy Recovery Plan",
         description:
-          "Your recent check-ins suggest a moderate emotional rhythm. This plan helps you balance rest, motivation, and self-awareness.",
+          "This plan is based on your latest tired check-in. It focuses on rest, energy, and reducing unnecessary pressure.",
         actions: [
-          "Choose one small task and complete only that first.",
-          "Drink water and take a short movement break.",
-          "Sleep a little earlier if possible.",
-          "Read one psychology insight related to stress or motivation.",
+          "Drink water and take a short stretch break.",
+          "Close your eyes for two minutes without using your phone.",
+          "Reduce one unnecessary task today.",
+          activeIntensity >= 7
+            ? "Try to sleep earlier or take proper rest if possible."
+            : "Do one light activity that does not drain you.",
+        ],
+      };
+    }
+
+    if (activeMood === "Calm") {
+      return {
+        title: "Calm Maintenance Plan",
+        description:
+          "This plan is based on your latest calm check-in. It helps you understand what is working well and maintain emotional balance.",
+        actions: [
+          "Write one reason why you feel calm today.",
+          "Repeat one habit that helped you feel stable.",
+          "Use this calm state to complete one meaningful task.",
+          "Save this check-in so you can understand your calm patterns later.",
+        ],
+      };
+    }
+
+    if (activeMood === "Peaceful") {
+      return {
+        title: "Peace Preservation Plan",
+        description:
+          "This plan is based on your latest peaceful check-in. It helps you protect and understand peaceful moments.",
+        actions: [
+          "Pause for one minute and enjoy the peaceful feeling.",
+          "Notice what helped you feel peaceful today.",
+          "Avoid rushing into stressful tasks immediately.",
+          "Write one thing you want to repeat tomorrow.",
+        ],
+      };
+    }
+
+    if (activeMood === "Motivated") {
+      return {
+        title: "Focused Motivation Plan",
+        description:
+          "This plan is based on your latest motivated check-in. It helps you use your energy in a clear and useful way.",
+        actions: [
+          "Choose one important task to complete first.",
+          "Set a 20-minute focus timer.",
+          "Avoid starting too many things at once.",
+          "Use your motivation for progress, not pressure.",
         ],
       };
     }
 
     return {
-      title: "Growth Maintenance Plan",
+      title: "Start Your Wellness Pattern",
       description:
-        "Your recent check-ins suggest a calmer emotional pattern. This plan helps you maintain emotional awareness and continue personal growth.",
+        "Begin by saving one mood check-in today. Once you add check-ins, MindMirror will show a personal wellness plan based on your mood and intensity.",
       actions: [
-        "Continue saving regular mood check-ins.",
-        "Reflect on what helped you feel stable recently.",
-        "Try one new assessment to learn more about yourself.",
-        "Keep one healthy routine consistent this week.",
+        "Choose how you feel today.",
+        "Set your emotional intensity.",
+        "Read the suggested exercise.",
+        "Save the check-in to track your emotional pattern.",
       ],
     };
   };
