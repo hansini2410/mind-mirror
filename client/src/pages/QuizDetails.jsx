@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { useParams, Link } from "react-router-dom";
+import {
+  useParams,
+  Link,
+} from "react-router-dom";
 
 import { motion } from "framer-motion";
 
@@ -24,21 +27,31 @@ function QuizDetails() {
 
   const storageKey = `mindmirror-quiz-${id}`;
 
-  const [quiz, setQuiz] = useState(null);
+  const [quiz, setQuiz] =
+    useState(null);
 
-  const [currentQuestion, setCurrentQuestion] =
+  const [
+    currentQuestion,
+    setCurrentQuestion,
+  ] = useState(0);
+
+  const [
+    selectedAnswers,
+    setSelectedAnswers,
+  ] = useState([]);
+
+  const [score, setScore] =
     useState(0);
 
-  const [selectedAnswers, setSelectedAnswers] =
-    useState([]);
+  const [
+    showResult,
+    setShowResult,
+  ] = useState(false);
 
-  const [score, setScore] = useState(0);
-
-  const [showResult, setShowResult] =
-    useState(false);
-
-  const [savedAnswers, setSavedAnswers] =
-    useState([]);
+  const [
+    savedAnswers,
+    setSavedAnswers,
+  ] = useState([]);
 
   useEffect(() => {
     fetchQuiz();
@@ -164,16 +177,30 @@ function QuizDetails() {
     const totalQuestions =
       quiz?.questions?.length || 0;
 
-    const maxPossibleScore =
-      totalQuestions * 4;
+    let minPossibleScore = 0;
+    let maxPossibleScore = 0;
 
-    const minPossibleScore =
-      totalQuestions * 1;
+    quiz?.questions?.forEach(
+      (questionItem) => {
+        const scores =
+          questionItem.options?.map(
+            (option) =>
+              Number(option.score || 0)
+          ) || [];
+
+        minPossibleScore +=
+          Math.min(...scores);
+        maxPossibleScore +=
+          Math.max(...scores);
+      }
+    );
 
     const percentage =
-      maxPossibleScore === minPossibleScore
+      maxPossibleScore ===
+      minPossibleScore
         ? 0
-        : ((finalScore - minPossibleScore) /
+        : ((finalScore -
+            minPossibleScore) /
             (maxPossibleScore -
               minPossibleScore)) *
           100;
@@ -189,10 +216,50 @@ function QuizDetails() {
   const getEvaluation = (
     finalScore = score
   ) => {
-    const quizType = getQuizType();
-
     const { percentage } =
       getScoreDetails(finalScore);
+
+    const hasCustomResultGuides =
+      quiz?.resultGuides?.low?.title &&
+      quiz?.resultGuides?.medium
+        ?.title &&
+      quiz?.resultGuides?.high?.title;
+
+    if (hasCustomResultGuides) {
+      let guide = quiz.resultGuides.high;
+
+      if (percentage <= 33) {
+        guide = quiz.resultGuides.low;
+      } else if (percentage <= 66) {
+        guide =
+          quiz.resultGuides.medium;
+      }
+
+      return {
+        title: guide.title,
+        message: guide.message,
+        suggestion:
+          guide.suggestion,
+        articles: [
+          {
+            title:
+              "Understanding Anxiety and Overthinking",
+            link: getBlogSearchLink(
+              "anxiety overthinking"
+            ),
+          },
+          {
+            title:
+              "Building Emotional Intelligence",
+            link: getBlogSearchLink(
+              "emotional intelligence"
+            ),
+          },
+        ],
+      };
+    }
+
+    const quizType = getQuizType();
 
     const category =
       quiz?.category || "Self Awareness";
@@ -230,7 +297,8 @@ function QuizDetails() {
 
       if (percentage <= 66) {
         return {
-          title: "Moderate Concern Level",
+          title:
+            "Moderate Concern Level",
 
           message: `Your responses suggest a moderate level of ${category.toLowerCase()}-related pressure. You may be experiencing occasional emotional strain, overthinking, fatigue, or difficulty fully relaxing.`,
 
@@ -382,7 +450,8 @@ function QuizDetails() {
 
     if (percentage <= 33) {
       return {
-        title: "Needs More Reflection",
+        title:
+          "Needs More Reflection",
 
         message:
           "Your responses suggest this area may need more attention, support, or emotional awareness.",
@@ -459,12 +528,15 @@ function QuizDetails() {
         const selectedOption =
           questionItem.options.find(
             (option) =>
-              option._id === selectedOptionId
+              option._id ===
+              selectedOptionId
           );
 
         return (
           total +
-          Number(selectedOption?.score || 0)
+          Number(
+            selectedOption?.score || 0
+          )
         );
       },
       0
@@ -480,11 +552,13 @@ function QuizDetails() {
         const selectedOption =
           questionItem.options.find(
             (option) =>
-              option._id === selectedOptionId
+              option._id ===
+              selectedOptionId
           );
 
         return {
-          question: questionItem.question,
+          question:
+            questionItem.question,
           answer:
             selectedOption?.text ||
             "Not answered",
@@ -528,7 +602,9 @@ function QuizDetails() {
       }
     };
 
-  const handleAnswerSelect = (optionId) => {
+  const handleAnswerSelect = (
+    optionId
+  ) => {
     const updatedAnswers = [
       ...selectedAnswers,
     ];
@@ -536,7 +612,9 @@ function QuizDetails() {
     updatedAnswers[currentQuestion] =
       optionId;
 
-    setSelectedAnswers(updatedAnswers);
+    setSelectedAnswers(
+      updatedAnswers
+    );
   };
 
   const handlePreviousQuestion = () => {
@@ -549,44 +627,53 @@ function QuizDetails() {
     );
   };
 
-  const handleNextQuestion = async () => {
-    if (!selectedAnswers[currentQuestion]) {
-      return;
-    }
+  const handleNextQuestion =
+    async () => {
+      if (
+        !selectedAnswers[
+          currentQuestion
+        ]
+      ) {
+        return;
+      }
 
-    if (
-      currentQuestion + 1 <
-      quiz.questions.length
-    ) {
-      setCurrentQuestion(
-        currentQuestion + 1
+      if (
+        currentQuestion + 1 <
+        quiz.questions.length
+      ) {
+        setCurrentQuestion(
+          currentQuestion + 1
+        );
+
+        return;
+      }
+
+      const finalScore =
+        calculateFinalScore();
+
+      const finalEvaluation =
+        getEvaluation(finalScore);
+
+      const finalSavedAnswers =
+        createAnswerSummary();
+
+      await saveResultToDatabase(
+        finalScore,
+        finalEvaluation
       );
 
-      return;
-    }
+      setScore(finalScore);
 
-    const finalScore =
-      calculateFinalScore();
+      setSavedAnswers(
+        finalSavedAnswers
+      );
 
-    const finalEvaluation =
-      getEvaluation(finalScore);
+      setShowResult(true);
 
-    const finalSavedAnswers =
-      createAnswerSummary();
-
-    await saveResultToDatabase(
-      finalScore,
-      finalEvaluation
-    );
-
-    setScore(finalScore);
-
-    setSavedAnswers(finalSavedAnswers);
-
-    setShowResult(true);
-
-    localStorage.removeItem(storageKey);
-  };
+      localStorage.removeItem(
+        storageKey
+      );
+    };
 
   if (!quiz) {
     return (
@@ -600,7 +687,9 @@ function QuizDetails() {
     quiz.questions[currentQuestion];
 
   const selectedAnswer =
-    selectedAnswers[currentQuestion];
+    selectedAnswers[
+      currentQuestion
+    ];
 
   const evaluation = getEvaluation();
 
@@ -841,8 +930,7 @@ function QuizDetails() {
                 width: `${
                   ((currentQuestion +
                     1) /
-                    quiz.questions
-                      .length) *
+                    quiz.questions.length) *
                   100
                 }%`,
               }}
@@ -852,9 +940,7 @@ function QuizDetails() {
           <p className="mt-3 text-slate-300 text-sm">
             Question{" "}
             {currentQuestion + 1} of{" "}
-            {
-              quiz.questions.length
-            }
+            {quiz.questions.length}
           </p>
         </div>
 
@@ -934,9 +1020,7 @@ function QuizDetails() {
             onClick={
               handleNextQuestion
             }
-            disabled={
-              !selectedAnswer
-            }
+            disabled={!selectedAnswer}
             className="bg-gradient-to-r from-cyan-500 to-blue-600 transition p-4 sm:p-5 rounded-2xl text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/20 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {currentQuestion + 1 ===

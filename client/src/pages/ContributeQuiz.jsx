@@ -20,7 +20,8 @@ const API_URL =
 
 function ContributeQuiz() {
   const userData = JSON.parse(
-    localStorage.getItem("mindmirrorUser") || "null"
+    localStorage.getItem("mindmirrorUser") ||
+      "null"
   );
 
   const [contributionType, setContributionType] =
@@ -33,10 +34,34 @@ function ContributeQuiz() {
 
   const createQuestion = () => ({
     question: "",
-    options: [createOption(1), createOption(2)],
+    options: [
+      createOption(1),
+      createOption(2),
+    ],
   });
 
-  const [title, setTitle] = useState("");
+  const createResultGuides = () => ({
+    low: {
+      title: "",
+      message: "",
+      suggestion: "",
+    },
+
+    medium: {
+      title: "",
+      message: "",
+      suggestion: "",
+    },
+
+    high: {
+      title: "",
+      message: "",
+      suggestion: "",
+    },
+  });
+
+  const [title, setTitle] =
+    useState("");
 
   const [description, setDescription] =
     useState("");
@@ -47,15 +72,20 @@ function ContributeQuiz() {
   const [customCategory, setCustomCategory] =
     useState("");
 
-  const [questions, setQuestions] = useState([
-    createQuestion(),
-    createQuestion(),
-    createQuestion(),
-    createQuestion(),
-    createQuestion(),
-  ]);
+  const [questions, setQuestions] =
+    useState([
+      createQuestion(),
+      createQuestion(),
+      createQuestion(),
+      createQuestion(),
+      createQuestion(),
+    ]);
 
-  const [blogUrl, setBlogUrl] = useState("");
+  const [resultGuides, setResultGuides] =
+    useState(createResultGuides());
+
+  const [blogUrl, setBlogUrl] =
+    useState("");
 
   const [blogSource, setBlogSource] =
     useState("");
@@ -63,7 +93,8 @@ function ContributeQuiz() {
   const [loading, setLoading] =
     useState(false);
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] =
+    useState("");
 
   const categories = [
     "Self Awareness",
@@ -91,6 +122,7 @@ function ContributeQuiz() {
     setCustomCategory("");
     setBlogUrl("");
     setBlogSource("");
+    setResultGuides(createResultGuides());
   };
 
   const getFinalCategory = () => {
@@ -103,15 +135,15 @@ function ContributeQuiz() {
     questionIndex,
     value
   ) => {
-    const updatedQuestions = questions.map(
-      (question, index) =>
+    const updatedQuestions =
+      questions.map((question, index) =>
         index === questionIndex
           ? {
               ...question,
               question: value,
             }
           : question
-    );
+      );
 
     setQuestions(updatedQuestions);
   };
@@ -121,26 +153,26 @@ function ContributeQuiz() {
     optionIndex,
     value
   ) => {
-    const updatedQuestions = questions.map(
-      (question, qIndex) => {
+    const updatedQuestions =
+      questions.map((question, qIndex) => {
         if (qIndex !== questionIndex) {
           return question;
         }
 
         return {
           ...question,
-          options: question.options.map(
-            (option, oIndex) =>
-              oIndex === optionIndex
-                ? {
-                    ...option,
-                    text: value,
-                  }
-                : option
-          ),
+          options:
+            question.options.map(
+              (option, oIndex) =>
+                oIndex === optionIndex
+                  ? {
+                      ...option,
+                      text: value,
+                    }
+                  : option
+            ),
         };
-      }
-    );
+      });
 
     setQuestions(updatedQuestions);
   };
@@ -150,28 +182,42 @@ function ContributeQuiz() {
     optionIndex,
     value
   ) => {
-    const updatedQuestions = questions.map(
-      (question, qIndex) => {
+    const updatedQuestions =
+      questions.map((question, qIndex) => {
         if (qIndex !== questionIndex) {
           return question;
         }
 
         return {
           ...question,
-          options: question.options.map(
-            (option, oIndex) =>
-              oIndex === optionIndex
-                ? {
-                    ...option,
-                    score: Number(value),
-                  }
-                : option
-          ),
+          options:
+            question.options.map(
+              (option, oIndex) =>
+                oIndex === optionIndex
+                  ? {
+                      ...option,
+                      score: Number(value),
+                    }
+                  : option
+            ),
         };
-      }
-    );
+      });
 
     setQuestions(updatedQuestions);
+  };
+
+  const updateResultGuide = (
+    level,
+    field,
+    value
+  ) => {
+    setResultGuides({
+      ...resultGuides,
+      [level]: {
+        ...resultGuides[level],
+        [field]: value,
+      },
+    });
   };
 
   const addQuestion = () => {
@@ -183,7 +229,9 @@ function ContributeQuiz() {
     setMessage("");
   };
 
-  const removeQuestion = (questionIndex) => {
+  const removeQuestion = (
+    questionIndex
+  ) => {
     if (questions.length <= 5) {
       setMessage(
         "A community discovery requires at least 5 questions."
@@ -192,9 +240,11 @@ function ContributeQuiz() {
       return;
     }
 
-    const updatedQuestions = questions.filter(
-      (_, index) => index !== questionIndex
-    );
+    const updatedQuestions =
+      questions.filter(
+        (_, index) =>
+          index !== questionIndex
+      );
 
     setQuestions(updatedQuestions);
 
@@ -202,8 +252,8 @@ function ContributeQuiz() {
   };
 
   const addOption = (questionIndex) => {
-    const updatedQuestions = questions.map(
-      (question, index) =>
+    const updatedQuestions =
+      questions.map((question, index) =>
         index === questionIndex
           ? {
               ...question,
@@ -213,7 +263,7 @@ function ContributeQuiz() {
               ],
             }
           : question
-    );
+      );
 
     setQuestions(updatedQuestions);
 
@@ -227,7 +277,9 @@ function ContributeQuiz() {
     const selectedQuestion =
       questions[questionIndex];
 
-    if (selectedQuestion.options.length <= 2) {
+    if (
+      selectedQuestion.options.length <= 2
+    ) {
       setMessage(
         "Each question requires at least 2 options."
       );
@@ -235,18 +287,20 @@ function ContributeQuiz() {
       return;
     }
 
-    const updatedQuestions = questions.map(
-      (question, index) =>
+    const updatedQuestions =
+      questions.map((question, index) =>
         index === questionIndex
           ? {
               ...question,
-              options: question.options.filter(
-                (_, optionPosition) =>
-                  optionPosition !== optionIndex
-              ),
+              options:
+                question.options.filter(
+                  (_, optionPosition) =>
+                    optionPosition !==
+                    optionIndex
+                ),
             }
           : question
-    );
+      );
 
     setQuestions(updatedQuestions);
 
@@ -301,7 +355,11 @@ function ContributeQuiz() {
       return false;
     }
 
-    for (let i = 0; i < questions.length; i++) {
+    for (
+      let i = 0;
+      i < questions.length;
+      i++
+    ) {
       const question = questions[i];
 
       if (!question.question.trim()) {
@@ -314,7 +372,9 @@ function ContributeQuiz() {
 
       if (question.options.length < 2) {
         setMessage(
-          `Question ${i + 1} requires at least 2 options.`
+          `Question ${
+            i + 1
+          } requires at least 2 options.`
         );
 
         return false;
@@ -325,11 +385,14 @@ function ContributeQuiz() {
         j < question.options.length;
         j++
       ) {
-        const option = question.options[j];
+        const option =
+          question.options[j];
 
         if (!option.text.trim()) {
           setMessage(
-            `Please complete Option ${j + 1} in Question ${i + 1}.`
+            `Please complete Option ${
+              j + 1
+            } in Question ${i + 1}.`
           );
 
           return false;
@@ -340,11 +403,61 @@ function ContributeQuiz() {
           option.score > 5
         ) {
           setMessage(
-            `Scores must be between 1 and 5 in Question ${i + 1}.`
+            `Scores must be between 1 and 5 in Question ${
+              i + 1
+            }.`
           );
 
           return false;
         }
+      }
+    }
+
+    const levels = [
+      "low",
+      "medium",
+      "high",
+    ];
+
+    for (
+      let i = 0;
+      i < levels.length;
+      i++
+    ) {
+      const level = levels[i];
+
+      if (
+        !resultGuides[level].title.trim()
+      ) {
+        setMessage(
+          `Please enter the ${level} score result title.`
+        );
+
+        return false;
+      }
+
+      if (
+        !resultGuides[
+          level
+        ].message.trim()
+      ) {
+        setMessage(
+          `Please enter the ${level} score result message.`
+        );
+
+        return false;
+      }
+
+      if (
+        !resultGuides[
+          level
+        ].suggestion.trim()
+      ) {
+        setMessage(
+          `Please enter the ${level} score result suggestion.`
+        );
+
+        return false;
       }
     }
 
@@ -356,7 +469,8 @@ function ContributeQuiz() {
       return false;
     }
 
-    const trimmedBlogUrl = blogUrl.trim();
+    const trimmedBlogUrl =
+      blogUrl.trim();
 
     if (!trimmedBlogUrl) {
       setMessage(
@@ -367,8 +481,12 @@ function ContributeQuiz() {
     }
 
     if (
-      !trimmedBlogUrl.startsWith("http://") &&
-      !trimmedBlogUrl.startsWith("https://")
+      !trimmedBlogUrl.startsWith(
+        "http://"
+      ) &&
+      !trimmedBlogUrl.startsWith(
+        "https://"
+      )
     ) {
       setMessage(
         "Please enter a valid blog link starting with http:// or https://."
@@ -401,9 +519,11 @@ function ContributeQuiz() {
         `${API_URL}/quizzes/contribute`,
         {
           title: title.trim(),
-          description: description.trim(),
+          description:
+            description.trim(),
           category: getFinalCategory(),
           questions,
+          resultGuides,
         },
         {
           headers: {
@@ -421,6 +541,10 @@ function ContributeQuiz() {
         createQuestion(),
         createQuestion(),
       ]);
+
+      setResultGuides(
+        createResultGuides()
+      );
 
       setMessage(
         "Your community quiz has been submitted for admin review."
@@ -450,7 +574,8 @@ function ContributeQuiz() {
       return;
     }
 
-    const trimmedBlogUrl = blogUrl.trim();
+    const trimmedBlogUrl =
+      blogUrl.trim();
 
     const finalSource =
       blogSource.trim() ||
@@ -464,7 +589,8 @@ function ContributeQuiz() {
         `${API_URL}/blogs/contribute`,
         {
           title: title.trim(),
-          description: description.trim(),
+          description:
+            description.trim(),
           category: getFinalCategory(),
           sourceName: finalSource,
           sourceUrl: trimmedBlogUrl,
@@ -507,7 +633,8 @@ function ContributeQuiz() {
     <div
       className="min-h-screen text-white relative overflow-hidden"
       style={{
-        fontFamily: "Poppins, sans-serif",
+        fontFamily:
+          "Poppins, sans-serif",
         background:
           "linear-gradient(to bottom right, #020617, #0f172a, #1d4ed8)",
       }}
@@ -544,10 +671,10 @@ function ContributeQuiz() {
           </h1>
 
           <p className="text-slate-300 text-lg sm:text-xl md:text-2xl leading-8 sm:leading-9 md:leading-[2] max-w-4xl">
-            Contribute either a self-reflection
-            quiz or a useful psychology blog
-            resource for the MindMirror
-            community.
+            Contribute either a
+            self-reflection quiz or a useful
+            psychology blog resource for the
+            MindMirror community.
           </p>
         </motion.div>
 
@@ -609,9 +736,14 @@ function ContributeQuiz() {
             <select
               value={category}
               onChange={(e) => {
-                setCategory(e.target.value);
+                setCategory(
+                  e.target.value
+                );
 
-                if (e.target.value !== "Others") {
+                if (
+                  e.target.value !==
+                  "Others"
+                ) {
                   setCustomCategory("");
                 }
               }}
@@ -633,7 +765,9 @@ function ContributeQuiz() {
             <input
               value={customCategory}
               onChange={(e) =>
-                setCustomCategory(e.target.value)
+                setCustomCategory(
+                  e.target.value
+                )
               }
               placeholder="Enter custom category..."
               className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-6"
@@ -643,7 +777,9 @@ function ContributeQuiz() {
           <textarea
             value={description}
             onChange={(e) =>
-              setDescription(e.target.value)
+              setDescription(
+                e.target.value
+              )
             }
             placeholder={
               contributionType === "quiz"
@@ -658,7 +794,9 @@ function ContributeQuiz() {
               <input
                 value={blogUrl}
                 onChange={(e) =>
-                  setBlogUrl(e.target.value)
+                  setBlogUrl(
+                    e.target.value
+                  )
                 }
                 placeholder="Blog/article link"
                 className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
@@ -667,7 +805,9 @@ function ContributeQuiz() {
               <input
                 value={blogSource}
                 onChange={(e) =>
-                  setBlogSource(e.target.value)
+                  setBlogSource(
+                    e.target.value
+                  )
                 }
                 placeholder="Source name, example: APA, Verywell Mind, WHO..."
                 className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
@@ -675,6 +815,100 @@ function ContributeQuiz() {
             </div>
           )}
         </div>
+
+        {contributionType === "quiz" && (
+          <div className="bg-white/10 border border-white/10 backdrop-blur-xl rounded-[32px] sm:rounded-[40px] p-6 sm:p-10 md:p-12 shadow-2xl mb-10 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Result Messages
+            </h2>
+
+            <p className="text-slate-300 text-base sm:text-lg leading-8 mb-8">
+              Add what should be displayed
+              after users complete this quiz
+              based on their score.
+            </p>
+
+            <div className="space-y-8">
+              {[
+                {
+                  key: "low",
+                  title:
+                    "Low Score Result",
+                },
+                {
+                  key: "medium",
+                  title:
+                    "Medium Score Result",
+                },
+                {
+                  key: "high",
+                  title:
+                    "High Score Result",
+                },
+              ].map((level) => (
+                <div
+                  key={level.key}
+                  className="bg-white/5 border border-white/10 rounded-3xl p-5 sm:p-6"
+                >
+                  <h3 className="text-2xl font-bold mb-5">
+                    {level.title}
+                  </h3>
+
+                  <input
+                    value={
+                      resultGuides[
+                        level.key
+                      ].title
+                    }
+                    onChange={(e) =>
+                      updateResultGuide(
+                        level.key,
+                        "title",
+                        e.target.value
+                      )
+                    }
+                    placeholder={`${level.title} title`}
+                    className="w-full bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-5"
+                  />
+
+                  <textarea
+                    value={
+                      resultGuides[
+                        level.key
+                      ].message
+                    }
+                    onChange={(e) =>
+                      updateResultGuide(
+                        level.key,
+                        "message",
+                        e.target.value
+                      )
+                    }
+                    placeholder={`${level.title} message`}
+                    className="w-full min-h-[110px] bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white mb-5"
+                  ></textarea>
+
+                  <textarea
+                    value={
+                      resultGuides[
+                        level.key
+                      ].suggestion
+                    }
+                    onChange={(e) =>
+                      updateResultGuide(
+                        level.key,
+                        "suggestion",
+                        e.target.value
+                      )
+                    }
+                    placeholder={`${level.title} suggestion`}
+                    className="w-full min-h-[110px] bg-white/5 border border-white/10 rounded-3xl p-5 text-base sm:text-lg outline-none focus:border-cyan-400 transition placeholder:text-slate-400 text-white"
+                  ></textarea>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {contributionType === "quiz" && (
           <div className="space-y-8 md:space-y-10 mb-10 md:mb-12">
@@ -716,7 +950,9 @@ function ContributeQuiz() {
                   </div>
 
                   <input
-                    value={questionItem.question}
+                    value={
+                      questionItem.question
+                    }
                     onChange={(e) =>
                       updateQuestionText(
                         questionIndex,
@@ -738,7 +974,9 @@ function ContributeQuiz() {
                           className="grid md:grid-cols-[1fr_140px_auto] gap-4 items-center"
                         >
                           <input
-                            value={option.text}
+                            value={
+                              option.text
+                            }
                             onChange={(e) =>
                               updateOptionText(
                                 questionIndex,
@@ -756,7 +994,9 @@ function ContributeQuiz() {
                             type="number"
                             min="1"
                             max="5"
-                            value={option.score}
+                            value={
+                              option.score
+                            }
                             onChange={(e) =>
                               updateOptionScore(
                                 questionIndex,
@@ -787,7 +1027,9 @@ function ContributeQuiz() {
                   <button
                     type="button"
                     onClick={() =>
-                      addOption(questionIndex)
+                      addOption(
+                        questionIndex
+                      )
                     }
                     className="mt-8 bg-cyan-500/10 border border-cyan-400/20 px-6 py-4 rounded-2xl hover:bg-cyan-500/20 transition flex items-center gap-3"
                   >
@@ -825,7 +1067,8 @@ function ContributeQuiz() {
           >
             {loading
               ? "Submitting..."
-              : contributionType === "quiz"
+              : contributionType ===
+                "quiz"
               ? "Submit Quiz for Review"
               : "Submit Blog for Review"}
 

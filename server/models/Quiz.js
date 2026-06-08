@@ -22,6 +22,31 @@ const referenceSchema = new mongoose.Schema(
   }
 );
 
+const resultGuideSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    message: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    suggestion: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const optionSchema = new mongoose.Schema(
   {
     text: {
@@ -100,6 +125,35 @@ const quizSchema = new mongoose.Schema(
         source: "",
         url: "",
       }),
+    },
+
+    resultGuides: {
+      low: {
+        type: resultGuideSchema,
+        default: () => ({
+          title: "",
+          message: "",
+          suggestion: "",
+        }),
+      },
+
+      medium: {
+        type: resultGuideSchema,
+        default: () => ({
+          title: "",
+          message: "",
+          suggestion: "",
+        }),
+      },
+
+      high: {
+        type: resultGuideSchema,
+        default: () => ({
+          title: "",
+          message: "",
+          suggestion: "",
+        }),
+      },
     },
 
     status: {
